@@ -9,8 +9,7 @@ public class Share {
     private final Team buyer_Team;
     private final Team from_Team;
     private final String time_when_bought_or_sold;
-    private final double price_per_share_when_bought_or_sold;
-    private final double total_price_when_bought_or_sold;
+
 
     public Share(String share_id, int quantity, Team buyer_Team, Team from_Team) {
         this.share_id = share_id;
@@ -18,18 +17,14 @@ public class Share {
         this.buyer_Team = buyer_Team;
         this.from_Team = from_Team;
         this.time_when_bought_or_sold = LocalDateTime.now().format(DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm:ss"));
-        this.price_per_share_when_bought_or_sold = from_Team.getSelf_share_price();
-        this.total_price_when_bought_or_sold = from_Team.getSelf_share_price() * quantity;
     }
 
-    public Share(String share_id, int quantity, Team buyer_Team, Team from_Team, String time_when_bought_or_sold, long price_per_share_when_bought_or_sold) {
+    public Share(String share_id, int quantity, Team buyer_Team, Team from_Team, String time_when_bought_or_sold) {
         this.share_id = share_id;
         this.quantity = quantity;
         this.buyer_Team = buyer_Team;
         this.from_Team = from_Team;
         this.time_when_bought_or_sold = time_when_bought_or_sold;
-        this.price_per_share_when_bought_or_sold = price_per_share_when_bought_or_sold;
-        this.total_price_when_bought_or_sold = from_Team.getSelf_share_price() * quantity;
     }
 
     public String getShare_id() {
@@ -52,11 +47,7 @@ public class Share {
         return time_when_bought_or_sold;
     }
 
-    public double getPrice_per_share_when_bought_or_sold() {
-        return price_per_share_when_bought_or_sold;
-    }
-
-    public double getTotal_price_when_bought_or_sold() {
-        return total_price_when_bought_or_sold;
+    public void setQuantity(int quantity) {
+        this.quantity = quantity;
     }
 }
