@@ -62,6 +62,10 @@ public class Team implements TeamConstants {
         return bought_shares;
     }
 
+    public double getTotal_assets() {
+        return calculateTotal_assets();
+    }
+
 
     // setters
     public void setSelf_share_price(double self_share_price) {
@@ -111,5 +115,10 @@ public class Team implements TeamConstants {
             }
         }
         return null;
+    }
+
+    @Override
+    public String toString() {
+        return team_name;
     }
 }
