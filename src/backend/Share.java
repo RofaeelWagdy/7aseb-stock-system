@@ -5,7 +5,7 @@ import java.time.format.DateTimeFormatter;
 
 public class Share {
     private final String share_id;
-    private final int quantity;
+    private int quantity;
     private final Team buyer_Team;
     private final Team from_Team;
     private final String time_when_bought_or_sold;
@@ -49,5 +49,9 @@ public class Share {
 
     public void setQuantity(int quantity) {
         this.quantity = quantity;
+    }
+
+    public double getTotalShare_price() {
+        return this.quantity * this.getFrom_Team().getSelf_share_price();
     }
 }
