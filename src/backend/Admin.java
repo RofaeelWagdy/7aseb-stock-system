@@ -309,12 +309,22 @@ public class Admin implements FileNames {
 
     //    used to add percent to specific share
     public void addPercentOfShareOfSpecificTeam(Team team, long added_percent) {
-        team.setSelf_share_price(team.getSelf_share_price() + ((double) added_percent /100 * team.getSelf_share_price()));
+//        check if the team exists
+        if (getTeamFromArrayUsingID(team.getTeam_id()) == null) {
+            System.out.println("Buyer Team not found");
+            return;
+        }
+        team.setSelf_share_price(team.getSelf_share_price() + ((double) added_percent / 100 * team.getSelf_share_price()));
     }
 
     //    used to subtract percent from specific share
     public void subtractPercentOfShareOfSpecificTeam(Team team, long added_percent) {
-        team.setSelf_share_price(team.getSelf_share_price() - ((double) added_percent /100 * team.getSelf_share_price()));
+//        check if the team exists
+        if (getTeamFromArrayUsingID(team.getTeam_id()) == null) {
+            System.out.println("Buyer Team not found");
+            return;
+        }
+        team.setSelf_share_price(team.getSelf_share_price() - ((double) added_percent / 100 * team.getSelf_share_price()));
     }
 
 }
