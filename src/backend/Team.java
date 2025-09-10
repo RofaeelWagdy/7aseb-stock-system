@@ -88,7 +88,7 @@ public class Team implements TeamConstants {
     // when self team buy shares
     public void buy_shares(Share share) {
         bought_shares.add(share);
-        this.balance -= (share.getPrice_per_share_when_bought_or_sold() * share.getQuantity());
+        this.balance -= (share.getFrom_Team().getSelf_share_price() * share.getQuantity());
     }
 
     // when self team buy shares
