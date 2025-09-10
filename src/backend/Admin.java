@@ -141,9 +141,37 @@ public class Admin implements FileNames {
             System.out.println("Insufficient balance");
             return;
         }
-        boughtSharesArray.add(newShare);
-        buyer_team.buy_shares(newShare);
-        from_team.decrease_available_self_shares_quantity(quantity);
+//        check if the from team has available shares to buy from
+        if (from_team.getAvailable_self_shares_quantity() < quantity) {
+            System.out.println("From Team doesn't have enough self shares");
+            return;
+        }
+//        check if the buyer has already bought the same team before
+        if (buyer_team.isBoughtFromSpecificTeam(from_team) != null) {
+
+//        check for the "only 20 shares from any team" rule
+            if ((buyer_team.isBoughtFromSpecificTeam(from_team).getQuantity() + quantity) > TeamConstants.ALLOWED_NUMBER_SHARES_TO_BUY_FROM_EACH_TEAM) {
+                System.out.println("7aseeeeeb .... U can only buy 20 shares from any team");
+                System.out.println("U have already bought " + buyer_team.isBoughtFromSpecificTeam(from_team).getQuantity() + " shares");
+                return;
+            }
+            System.out.println("You have bought from this team before");
+            Share oldShare = buyer_team.isBoughtFromSpecificTeam(from_team);
+            buyer_team.update_existing_shares(oldShare, quantity);
+            from_team.setAvailable_self_shares_quantity(from_team.getAvailable_self_shares_quantity() - quantity);
+
+        } else {
+//        check for the "only 20 shares from any team" rule
+            if (quantity > 20) {
+                System.out.println("U can only buy 20 shares from any team");
+                return;
+            }
+            String generatedShareID = idGenerator.generateShareID();
+            Share newShare = new Share(generatedShareID, quantity, buyer_team, from_team);
+            boughtSharesArray.add(newShare);
+            buyer_team.buy_shares(newShare);
+            from_team.setAvailable_self_shares_quantity(from_team.getAvailable_self_shares_quantity() - quantity);
+        }
         System.out.println("Share created successfully!\n##################################");
     }
 
