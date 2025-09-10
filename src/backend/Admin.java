@@ -121,16 +121,22 @@ public class Admin implements FileNames {
         return null;
     }
 
-//    used when buying share by team from another team
-//    to-do:
-//    validation for :  1) if the from team has available shares to buy from 2)
-//                      2) the "only 20 shares from any team" rule
-    public void buyShares(String share_id, int quantity, Team buyer_team, Team from_team) {
-        Share newShare = new Share(share_id, quantity, buyer_team, from_team);
 
 
 
     //    used when buying share by team from another team
+    public void buyShares(int quantity, Team buyer_team, Team from_team) {
+//        check if the buyer team exists
+        if (getTeamFromArrayUsingID(buyer_team.getTeam_id()) == null) {
+            System.out.println("Buyer Team not found");
+            return;
+        }
+//        check if the from team exists
+        if (getTeamFromArrayUsingID(from_team.getTeam_id()) == null) {
+            System.out.println("From Team not found");
+            return;
+        }
+//        check if the buyer has enough balance to buy the share
         if (buyer_team.getBalance() < (from_team.getSelf_share_price() * quantity)) {
             System.out.println("Insufficient balance");
             return;
