@@ -35,7 +35,7 @@ public class Admin implements FileNames {
         System.out.println("Team created successfully!\n#################################");
     }
 
-//    used to print all details of the teams on the console
+    //    used to print all details of the teams on the console
     public void displayTeams() {
         if (!teamsArray.isEmpty()) {
             System.out.println("Teams:");
@@ -54,7 +54,7 @@ public class Admin implements FileNames {
         System.out.println("##################################");
     }
 
-//    used to save team data into text file
+    //    used to save team data into text file
     public void saveTeamsToFile() {
         try {
             // creating new Write instance
@@ -71,7 +71,7 @@ public class Admin implements FileNames {
         }
     }
 
-//    used to load teams from the text file
+    //    used to load teams from the text file
     public void loadTeamsFromFile() {
         String fileContentString;
         try {
@@ -103,7 +103,7 @@ public class Admin implements FileNames {
         }
     }
 
-//    used to get team by ID (searching across the teams array)
+    //    used to get team by ID (searching across the teams array)
     public Team getTeamFromArrayUsingID(String key) {
         if (!teamsArray.isEmpty()) {
             for (Team team : teamsArray) {
@@ -121,6 +121,10 @@ public class Admin implements FileNames {
 //                      2) the "only 20 shares from any team" rule
     public void buyShares(String share_id, int quantity, Team buyer_team, Team from_team) {
         Share newShare = new Share(share_id, quantity, buyer_team, from_team);
+
+
+
+    //    used when buying share by team from another team
         if (buyer_team.getBalance() < (from_team.getSelf_share_price() * quantity)) {
             System.out.println("Insufficient balance");
             return;
@@ -140,7 +144,7 @@ public class Admin implements FileNames {
         System.out.println("Share created successfully!\n##################################");
     }
 
-//    used to search for specific share by shareID
+    //    used to search for specific share by shareID
     public Share getSharesFromArrayUsingID(String key) {
         if (!boughtSharesArray.isEmpty()) {
             for (Share share : boughtSharesArray) {
@@ -163,7 +167,7 @@ public class Admin implements FileNames {
         }
     }
 
-//    used to print details of given arrayList of shares
+    //    used to print details of given arrayList of shares
     public void displaySpecificShares(ArrayList<Share> shares) {
         for (Share share : shares) {
             System.out.println("Share ID: " + share.getShare_id());
@@ -176,17 +180,17 @@ public class Admin implements FileNames {
         }
     }
 
-//    used to print all details of all shares
+    //    used to print all details of all shares
     public void displayTotalShares() {
         displaySpecificShares(boughtSharesArray);
     }
 
-//    used to print all shares of specific team
+    //    used to print all shares of specific team
     public void displaySharesForSpecificTeam(Team team) {
         displaySpecificShares(team.getBought_shares());
     }
 
-//    used to save shares into files
+    //    used to save shares into files
     public void saveSharesToFile() {
         try {
             // creating new Write instance
@@ -203,7 +207,7 @@ public class Admin implements FileNames {
         }
     }
 
-//    used to load shares from files
+    //    used to load shares from files
     public void loadSharesFromFile() {
         String fileContentString;
         try {
@@ -236,12 +240,12 @@ public class Admin implements FileNames {
         }
     }
 
-//    used to add percent to specific share
+    //    used to add percent to specific share
     public void addPercentOfShareOfSpecificTeam(Team team, long added_percent) {
         team.setSelf_share_price(team.getSelf_share_price() + ((double) added_percent /100 * team.getSelf_share_price()));
     }
 
-//    used to subtract percent from specific share
+    //    used to subtract percent from specific share
     public void subtractPercentOfShareOfSpecificTeam(Team team, long added_percent) {
         team.setSelf_share_price(team.getSelf_share_price() - ((double) added_percent /100 * team.getSelf_share_price()));
     }
