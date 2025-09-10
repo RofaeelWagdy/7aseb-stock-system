@@ -20,11 +20,13 @@ public class Admin implements FileNames {
         System.out.println("Team created successfully!\n##################################");
     }
 
+//    used for system to create teams that are stored in the files (when loading the data)
     public void addTeamWhenLoadFromFile(String team_id, String team_name, int available_self_stock_quantity, long self_stock_price, long balance) {
         teamsArray.add(new Team(team_id, team_name, available_self_stock_quantity, self_stock_price, balance));
         System.out.println("Team created successfully!\n#################################");
     }
 
+//    used to print all details of the teams on the console
     public void displayTeams() {
         if (!teamsArray.isEmpty()) {
             System.out.println("Teams:");
@@ -42,6 +44,7 @@ public class Admin implements FileNames {
         System.out.println("##################################");
     }
 
+//    used to save team data into text file
     public void saveTeamsToFile() {
         try {
             // creating new Write instance
@@ -58,6 +61,7 @@ public class Admin implements FileNames {
         }
     }
 
+//    used to load teams from the text file
     public void loadTeamsFromFile() {
         String fileContentString;
         try {
@@ -83,6 +87,7 @@ public class Admin implements FileNames {
         }
     }
 
+//    used to get team by ID (searching across the teams array)
     public Team getTeamFromArrayUsingID(String key) {
         if (!teamsArray.isEmpty()) {
             for (Team team : teamsArray) {
@@ -94,15 +99,10 @@ public class Admin implements FileNames {
         return null;
     }
 
-    public double calculateTotalAssetsOfSpecificTeam(Team team) {
-        double totalAssets = team.getBalance();
-        for (Share share : team.getBought_shares()) {
-            totalAssets += share.getTotal_price_when_bought_or_sold();
-        }
-        return totalAssets;
-    }
-
-
+//    used when buying share by team from another team
+//    to-do:
+//    validation for :  1) if the from team has available shares to buy from 2)
+//                      2) the "only 20 shares from any team" rule
     public void buyShares(String share_id, int quantity, Team buyer_team, Team from_team) {
         Share newShare = new Share(share_id, quantity, buyer_team, from_team);
         if (buyer_team.getBalance() < (from_team.getSelf_share_price() * quantity)) {
@@ -115,6 +115,7 @@ public class Admin implements FileNames {
         System.out.println("Share created successfully!\n##################################");
     }
 
+//    used by program to create shares that are loaded from the file
     public void addSharesWhenLoadFromFile(String share_id, int quantity, Team buyer_team, Team from_team, String time_when_bought, long price_when_bought) {
         Share newShare = new Share(share_id, quantity, buyer_team, from_team, time_when_bought, price_when_bought);
         boughtSharesArray.add(newShare);
@@ -122,6 +123,7 @@ public class Admin implements FileNames {
         System.out.println("Share created successfully!\n##################################");
     }
 
+//    used to search for specific share by shareID
     public Share getSharesFromArrayUsingID(String key) {
         if (!boughtSharesArray.isEmpty()) {
             for (Share share : boughtSharesArray) {
@@ -133,6 +135,7 @@ public class Admin implements FileNames {
         return null;
     }
 
+//    used by user to sell shares
     public void sellShares(String share_id) {
         Share soldShare = getSharesFromArrayUsingID(share_id);
         if (soldShare != null) {
@@ -143,6 +146,7 @@ public class Admin implements FileNames {
         }
     }
 
+//    used to print details of given arrayList of shares
     public void displaySpecificShares(ArrayList<Share> shares) {
         for (Share share : shares) {
             System.out.println("quantity: " + share.getQuantity());
@@ -154,14 +158,17 @@ public class Admin implements FileNames {
         }
     }
 
+//    used to print all details of all shares
     public void displayTotalShares() {
         displaySpecificShares(boughtSharesArray);
     }
 
+//    used to print all shares of specific team
     public void displaySharesForSpecificTeam(Team team) {
         displaySpecificShares(team.getBought_shares());
     }
 
+//    used to save shares into files
     public void saveSharesToFile() {
         try {
             // creating new Write instance
@@ -178,6 +185,7 @@ public class Admin implements FileNames {
         }
     }
 
+//    used to load shares from files
     public void loadSharesFromFile() {
         String fileContentString;
         try {
@@ -204,10 +212,12 @@ public class Admin implements FileNames {
         }
     }
 
+//    used to add percent to specific share
     public void addPercentOfShareOfSpecificTeam(Team team, long added_percent) {
         team.setSelf_share_price(team.getSelf_share_price() + ((double) added_percent /100 * team.getSelf_share_price()));
     }
 
+//    used to subtract percent from specific share
     public void subtractPercentOfShareOfSpecificTeam(Team team, long added_percent) {
         team.setSelf_share_price(team.getSelf_share_price() - ((double) added_percent /100 * team.getSelf_share_price()));
     }
