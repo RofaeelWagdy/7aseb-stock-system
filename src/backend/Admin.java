@@ -196,14 +196,35 @@ public class Admin implements FileNames {
         return null;
     }
 
-//    used by user to sell shares
-    public void sellShares(String share_id) {
-        Share soldShare = getSharesFromArrayUsingID(share_id);
-        if (soldShare != null) {
-            soldShare.getBuyer_Team().sell_share(soldShare);
-            soldShare.getFrom_Team().increase_available_self_shares_quantity(soldShare.getQuantity());
-            boughtSharesArray.remove(soldShare);
-            soldSharesArray.add(soldShare);
+    //    used by user to sell shares using the ID of trams
+    public void sellShares(Team buyer_team, Team from_team, int quantity) {
+//        check if the buyer team exists
+        if (getTeamFromArrayUsingID(buyer_team.getTeam_id()) == null) {
+            System.out.println("Buyer Team not found");
+            return;
+        }
+//        check if the from team exists
+        if (getTeamFromArrayUsingID(from_team.getTeam_id()) == null) {
+            System.out.println("From Team not found");
+            return;
+        }
+
+        // get the share
+        for (Share share : buyer_team.getBought_shares()) {
+            if (Objects.equals(share.getFrom_Team().getTeam_id(), from_team.getTeam_id())) {
+                // remove the share from the bought shares array
+                // buyer team :
+                // remove the quantity from the buyer team
+                share.setQuantity(share.getQuantity() - quantity);
+                // add the balance to the buyer team
+                buyer_team.setBalance(buyer_team.getBalance() + (quantity * from_team.getSelf_share_price()));
+
+                // from team :
+                // update the available_self_shares_quantity of the from team
+                from_team.setAvailable_self_shares_quantity(quantity + from_team.getAvailable_self_shares_quantity());
+                System.out.println("Share sold successfully");
+                return;
+            }
         }
         System.out.println("Share not found");
     }
