@@ -25,8 +25,8 @@ public class Team implements TeamConstants {
 //        this.bought_then_sold_shares = new ArrayList<>();
     }
 
-    public Team(String team_id, String team_name, int available_self_shares_quantity, long self_share_price, long balance) {
     //    constructor used by the program to create team from loading data from file
+    public Team(String team_id, String team_name, int available_self_shares_quantity, double self_share_price, double balance) {
         this.team_id = team_id;
         this.team_name = team_name;
         this.available_self_shares_quantity = available_self_shares_quantity;
@@ -62,6 +62,29 @@ public class Team implements TeamConstants {
         return bought_shares;
     }
 
+
+    // setters
+    public void setSelf_share_price(double self_share_price) {
+        this.self_share_price = self_share_price;
+    }
+
+    public void setBalance(double balance) {
+        this.balance = balance;
+    }
+
+    public void setAvailable_self_shares_quantity(int available_self_shares_quantity) {
+        this.available_self_shares_quantity = available_self_shares_quantity;
+    }
+
+    // used to calculate total assets of self team
+    public double calculateTotal_assets() {
+        double total_assets = balance;
+        for (Share share : bought_shares) {
+            total_assets += share.getTotalShare_price();
+        }
+        return total_assets;
+    }
+
     // when self team buy shares
     public void buy_shares(Share share) {
         bought_shares.add(share);
@@ -90,7 +113,13 @@ public class Team implements TeamConstants {
         bought_shares.add(share);
     }
 
-    public void setSelf_share_price(double self_share_price) {
-        this.self_share_price = self_share_price;
+    // check if self team has bought from certain given team
+    public Share isBoughtFromSpecificTeam(Team suspiciousTeam) {
+        for (Share share : bought_shares) {
+            if (share.getFrom_Team().equals(suspiciousTeam)) {
+                return share;
+            }
+        }
+        return null;
     }
 }
