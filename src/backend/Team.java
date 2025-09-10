@@ -98,16 +98,6 @@ public class Team implements TeamConstants {
         balance += share.getTotal_price_when_bought_or_sold();
     }
 
-    // when another team buy from
-    public void decrease_available_self_shares_quantity(int quantity) {
-        available_self_shares_quantity -= quantity;
-    }
-
-    // when another team sell the shares that brought from self team
-    public void increase_available_self_shares_quantity(int quantity) {
-        available_self_shares_quantity += quantity;
-    }
-
     // add bought shares to the bought shares array (used when loading data from file)
     public void add_bought_share_to_bought_shares_array(Share share) {
         bought_shares.add(share);
