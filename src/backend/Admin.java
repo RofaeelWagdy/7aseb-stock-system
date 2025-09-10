@@ -15,16 +15,23 @@ public class Admin implements FileNames {
     ArrayList<Team> teamsArray = new ArrayList<>();
     ArrayList<Share> boughtSharesArray = new ArrayList<>();
     ArrayList<Share> soldSharesArray = new ArrayList<>();
+    private final IDGenerator idGenerator;
 
-
-    public void createTeam(String team_id, String team_name) {
-        teamsArray.add(new Team(team_id, team_name));
-        System.out.println("Team created successfully!\n##################################");
+    public Admin() {
+        this.idGenerator = new IDGenerator();
     }
 
-//    used for system to create teams that are stored in the files (when loading the data)
-    public void addTeamWhenLoadFromFile(String team_id, String team_name, int available_self_stock_quantity, long self_stock_price, long balance) {
-        teamsArray.add(new Team(team_id, team_name, available_self_stock_quantity, self_stock_price, balance));
+    //    used for user to create team (with auto-generated ID)
+    public void createTeam(String team_name) {
+        String generatedTeamId = idGenerator.generateTeamID();
+        teamsArray.add(new Team(generatedTeamId, team_name));
+        System.out.println("Team created successfully with ID: " + generatedTeamId + "\n##################################");
+    }
+
+    //    used for system to create teams that are stored in the files (when loading the data)
+    public void addTeamWhenLoadFromFile(String team_name, int available_self_stock_quantity, double self_stock_price, double balance) {
+        String generatedTeamId = idGenerator.generateTeamID();
+        teamsArray.add(new Team(generatedTeamId, team_name, available_self_stock_quantity, self_stock_price, balance));
         System.out.println("Team created successfully!\n#################################");
     }
 
@@ -91,7 +98,7 @@ public class Admin implements FileNames {
                     tokens[i] = tokens[i].trim();
 
                 // creating new backend.Team object
-                addTeamWhenLoadFromFile(tokens[0], tokens[1], Integer.parseInt(tokens[2]), Long.parseLong(tokens[3]), Long.parseLong(tokens[4]));
+                addTeamWhenLoadFromFile(tokens[1], Integer.parseInt(tokens[2]), Double.parseDouble(tokens[3]), Double.parseDouble(tokens[4]));
             }
         }
     }
@@ -124,9 +131,10 @@ public class Admin implements FileNames {
         System.out.println("Share created successfully!\n##################################");
     }
 
-//    used by program to create shares that are loaded from the file
-    public void addSharesWhenLoadFromFile(String share_id, int quantity, Team buyer_team, Team from_team, String time_when_bought, long price_when_bought) {
-        Share newShare = new Share(share_id, quantity, buyer_team, from_team, time_when_bought, price_when_bought);
+    //    used by program to create shares that are loaded from the file
+    public void addSharesWhenLoadFromFile(int quantity, Team buyer_team, Team from_team, String time_when_bought) {
+        String generatedShareID = idGenerator.generateShareID();
+        Share newShare = new Share(generatedShareID, quantity, buyer_team, from_team, time_when_bought);
         boughtSharesArray.add(newShare);
         buyer_team.add_bought_share_to_bought_shares_array(newShare);
         System.out.println("Share created successfully!\n##################################");
