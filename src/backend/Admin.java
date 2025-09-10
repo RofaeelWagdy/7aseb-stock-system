@@ -11,7 +11,7 @@ import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Objects;
 
-public class Admin implements FileNames {
+public class Admin implements FileNames, TeamConstants {
     ArrayList<Team> teamsArray = new ArrayList<>();
     ArrayList<Share> boughtSharesArray = new ArrayList<>();
     ArrayList<Share> soldSharesArray = new ArrayList<>();
@@ -263,7 +263,7 @@ public class Admin implements FileNames {
             Writer writer = new FileWriter(FileNames.SHARES_FILENAME);
             if (!boughtSharesArray.isEmpty()) {
                 for (Share share : boughtSharesArray) {
-                    writer.write(share.getShare_id() + "," + share.getQuantity() + "," + share.getBuyer_Team().getTeam_id() + "," + share.getFrom_Team().getTeam_id() + "," + share.getTime_when_bought_or_sold() + "," + share.getPrice_per_share_when_bought_or_sold() + "\n");
+                    writer.write(share.getShare_id() + "," + share.getQuantity() + "," + share.getBuyer_Team().getTeam_id() + "," + share.getFrom_Team().getTeam_id() + "," + share.getTime_when_bought_or_sold() + "\n");
                 }
                 writer.close();
                 System.out.println("Shares Saved successfully!");
@@ -301,8 +301,7 @@ public class Admin implements FileNames {
                     tokens[i] = tokens[i].trim();
 
                 // creating new backend.Team object
-                addSharesWhenLoadFromFile(tokens[0], Integer.parseInt(tokens[1]), getTeamFromArrayUsingID(tokens[2]), getTeamFromArrayUsingID(tokens[3]), tokens[4], Long.parseLong(tokens[5]));
-
+                addSharesWhenLoadFromFile(Integer.parseInt(tokens[1]), getTeamFromArrayUsingID(tokens[2]), getTeamFromArrayUsingID(tokens[3]), tokens[4]);
             }
         }
     }
