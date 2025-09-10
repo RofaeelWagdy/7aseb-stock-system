@@ -1,29 +1,62 @@
 package frontend;
 
+import backend.Main;
 import javafx.application.Application;
-import javafx.scene.Scene;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
 
-public class MainWindow extends Application {
+public class MainWindow extends Application implements Constants {
+
+    private static Stage mainStage;
+
     public static void main(String[] args) {
         launch(args);
     }
 
     @Override
-    public void start(Stage window) throws Exception {
-        Label stockMarketTitle = new Label("Stock Market System");
-        Button stockMarketButton = new Button("Stock Market");
-        stockMarketButton.setOnAction(e -> AlertBox.display("Stock Market System", "Stock Market System has been changed!"));
+    public void start(Stage window) {
+        mainStage = window;
+        mainStage.setTitle("7aseb Stock System");
+        mainStage.setOnCloseRequest(e -> {
+            e.consume();
+            if (ConfirmBox.display("Exit", "Are You Sure U Want to Exit ?")) {
+                Main.saveTeamsToFileFromFrontEnd();
+                Main.saveSharesToFileFromFrontEnd();
+                window.close();
+            }
+        });
 
-        StackPane root = new StackPane();
-        root.getChildren().addAll(stockMarketTitle, stockMarketButton);
+        if (!Main.loadTeamsFromFileFromFrontEnd())
+            PopUp.display("Error", "Error loading teams from file", true);
+        if (!Main.loadSharesFromFileFromFrontEnd())
+            PopUp.display("Error", "Error loading shares from file", true);
 
-        Scene scene = new Scene(root, 400, 400);
-        window.setScene(scene);
-        window.setTitle("7aseb Stock Market System");
+        StockMarketTableScene stockMarketTableScene = new StockMarketTableScene();
+        window.setScene(stockMarketTableScene.getScene());
         window.show();
+    }
+
+
+    public static void showCreateTeamScene() {
+        CreateTeamScene createTeamScene = new CreateTeamScene();
+        mainStage.setScene(createTeamScene.getScene());
+        mainStage.show();
+    }
+
+    public static void showStockMarketScene() {
+        StockMarketTableScene stockMarketTableScene = new StockMarketTableScene();
+        mainStage.setScene(stockMarketTableScene.getScene());
+        mainStage.show();
+    }
+
+    public static void showChangeSharePriceScene() {
+        ChangeSharePriceScene changeSharePriceScene = new ChangeSharePriceScene();
+        mainStage.setScene(changeSharePriceScene.getScene());
+        mainStage.show();
+    }
+
+    public static void showSharesTransactionScene() {
+        SharesTransactionScene sharesTransactionScene = new SharesTransactionScene();
+        mainStage.setScene(sharesTransactionScene.getScene());
+        mainStage.show();
     }
 }
