@@ -69,6 +69,7 @@ public class Admin implements FileNames {
                     writer.write(team.getTeam_id() + "," + team.getTeam_name() + "," + team.getAvailable_self_shares_quantity() + "," + team.getSelf_share_price() + "," + team.getBalance() + "\n");
                 }
                 writer.close();
+                System.out.println("Teams saved successfully!");
             }
         } catch (IOException e) {
             //noinspection CallToPrintStackTrace
@@ -170,6 +171,7 @@ public class Admin implements FileNames {
             boughtSharesArray.remove(soldShare);
             soldSharesArray.add(soldShare);
         }
+        System.out.println("Share not found");
     }
 
     //    used to print details of given arrayList of shares
@@ -209,6 +211,7 @@ public class Admin implements FileNames {
                     writer.write(share.getShare_id() + "," + share.getQuantity() + "," + share.getBuyer_Team().getTeam_id() + "," + share.getFrom_Team().getTeam_id() + "," + share.getTime_when_bought_or_sold() + "," + share.getPrice_per_share_when_bought_or_sold() + "\n");
                 }
                 writer.close();
+                System.out.println("Shares Saved successfully!");
             }
         } catch (IOException e) {
             //noinspection CallToPrintStackTrace
