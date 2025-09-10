@@ -13,6 +13,8 @@ public class Team implements TeamConstants {
     private ArrayList<Share> bought_shares;
 //    private ArrayList<Share> bought_then_sold_shares;
 
+
+    //    constructor used when the user create team for the first time
     public Team(String team_id, String team_name) {
         this.team_id = team_id;
         this.team_name = team_name;
@@ -24,6 +26,7 @@ public class Team implements TeamConstants {
     }
 
     public Team(String team_id, String team_name, int available_self_shares_quantity, long self_share_price, long balance) {
+    //    constructor used by the program to create team from loading data from file
         this.team_id = team_id;
         this.team_name = team_name;
         this.available_self_shares_quantity = available_self_shares_quantity;
@@ -33,6 +36,8 @@ public class Team implements TeamConstants {
 //        this.bought_then_sold_shares = new ArrayList<>();
     }
 
+
+    //    getters
     public String getTeam_id() {
         return team_id;
     }
