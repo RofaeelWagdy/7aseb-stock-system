@@ -7,6 +7,7 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.io.Writer;
 import java.nio.file.Files;
+import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Objects;
@@ -14,25 +15,30 @@ import java.util.Objects;
 public class Admin implements FileNames, TeamConstants {
     ArrayList<Team> teamsArray = new ArrayList<>();
     ArrayList<Share> boughtSharesArray = new ArrayList<>();
-    ArrayList<Share> soldSharesArray = new ArrayList<>();
+
     private final IDGenerator idGenerator;
 
     public Admin() {
         this.idGenerator = new IDGenerator();
     }
 
+
+    public ArrayList<Team> getTeamsArray() {
+        return teamsArray;
+    }
+
     //    used for user to create team (with auto-generated ID)
-    public void createTeam(String team_name) {
+    public boolean createTeam(String team_name) {
         String generatedTeamId = idGenerator.generateTeamID();
         teamsArray.add(new Team(generatedTeamId, team_name));
         System.out.println("Team created successfully with ID: " + generatedTeamId + "\n##################################");
+        return true;
     }
 
     //    used for system to create teams that are stored in the files (when loading the data)
     public void addTeamWhenLoadFromFile(String team_name, int available_self_stock_quantity, double self_stock_price, double balance) {
         String generatedTeamId = idGenerator.generateTeamID();
         teamsArray.add(new Team(generatedTeamId, team_name, available_self_stock_quantity, self_stock_price, balance));
-        System.out.println("Team created successfully!\n#################################");
     }
 
     //    used to print all details of the teams on the console
@@ -60,7 +66,7 @@ public class Admin implements FileNames, TeamConstants {
     }
 
     //    used to save team data into text file
-    public void saveTeamsToFile() {
+    public boolean saveTeamsToFile() {
         try {
             // creating new Write instance
             Writer writer = new FileWriter(FileNames.TEAMS_FILENAME);
@@ -74,23 +80,26 @@ public class Admin implements FileNames, TeamConstants {
         } catch (IOException e) {
             //noinspection CallToPrintStackTrace
             e.printStackTrace();
+            return false;
         }
+        return true;
     }
 
     //    used to load teams from the text file
-    public void loadTeamsFromFile() {
+    public boolean loadTeamsFromFile() {
         String fileContentString;
         try {
             // Check if file exists first
-            if (!Files.exists(Paths.get(FileNames.TEAMS_FILENAME))) {
+            Path teamFilenamePath = Paths.get(FileNames.TEAMS_FILENAME);
+            if (!Files.exists(teamFilenamePath)) {
                 System.out.println("Teams file does not exist. Starting with empty teams list.");
-                return;
+                return false;
             }
             // store the file content as 1 string in fileContentString
-            fileContentString = Files.readString(Paths.get(FileNames.TEAMS_FILENAME));
+            fileContentString = Files.readString(teamFilenamePath);
         } catch (IOException e) {
             System.out.println("Error reading teams file: " + e.getMessage());
-            return;
+            return false;
         }
         if (fileContentString.isBlank()) {
             System.out.println("Teams file is empty");
@@ -107,6 +116,8 @@ public class Admin implements FileNames, TeamConstants {
                 addTeamWhenLoadFromFile(tokens[1], Integer.parseInt(tokens[2]), Double.parseDouble(tokens[3]), Double.parseDouble(tokens[4]));
             }
         }
+        System.out.println("Teams loaded successfully!");
+        return true;
     }
 
     //    used to get team by ID (searching across the teams array)
@@ -125,26 +136,26 @@ public class Admin implements FileNames, TeamConstants {
 
 
     //    used when buying share by team from another team
-    public void buyShares(int quantity, Team buyer_team, Team from_team) {
+    public boolean buyShares(int quantity, Team buyer_team, Team from_team) {
 //        check if the buyer team exists
         if (getTeamFromArrayUsingID(buyer_team.getTeam_id()) == null) {
             System.out.println("Buyer Team not found");
-            return;
+            return false;
         }
 //        check if the from team exists
         if (getTeamFromArrayUsingID(from_team.getTeam_id()) == null) {
             System.out.println("From Team not found");
-            return;
+            return false;
         }
 //        check if the buyer has enough balance to buy the share
         if (buyer_team.getBalance() < (from_team.getSelf_share_price() * quantity)) {
             System.out.println("Insufficient balance");
-            return;
+            return false;
         }
 //        check if the from team has available shares to buy from
         if (from_team.getAvailable_self_shares_quantity() < quantity) {
             System.out.println("From Team doesn't have enough self shares");
-            return;
+            return false;
         }
 //        check if the buyer has already bought the same team before
         if (buyer_team.isBoughtFromSpecificTeam(from_team) != null) {
@@ -153,7 +164,7 @@ public class Admin implements FileNames, TeamConstants {
             if ((buyer_team.isBoughtFromSpecificTeam(from_team).getQuantity() + quantity) > TeamConstants.ALLOWED_NUMBER_SHARES_TO_BUY_FROM_EACH_TEAM) {
                 System.out.println("7aseeeeeb .... U can only buy 20 shares from any team");
                 System.out.println("U have already bought " + buyer_team.isBoughtFromSpecificTeam(from_team).getQuantity() + " shares");
-                return;
+                return false;
             }
             System.out.println("You have bought from this team before");
             Share oldShare = buyer_team.isBoughtFromSpecificTeam(from_team);
@@ -164,7 +175,7 @@ public class Admin implements FileNames, TeamConstants {
 //        check for the "only 20 shares from any team" rule
             if (quantity > 20) {
                 System.out.println("U can only buy 20 shares from any team");
-                return;
+                return false;
             }
             String generatedShareID = idGenerator.generateShareID();
             Share newShare = new Share(generatedShareID, quantity, buyer_team, from_team);
@@ -173,6 +184,7 @@ public class Admin implements FileNames, TeamConstants {
             from_team.setAvailable_self_shares_quantity(from_team.getAvailable_self_shares_quantity() - quantity);
         }
         System.out.println("Share created successfully!\n##################################");
+        return true;
     }
 
     //    used by program to create shares that are loaded from the file
@@ -181,7 +193,6 @@ public class Admin implements FileNames, TeamConstants {
         Share newShare = new Share(generatedShareID, quantity, buyer_team, from_team, time_when_bought);
         boughtSharesArray.add(newShare);
         buyer_team.add_bought_share_to_bought_shares_array(newShare);
-        System.out.println("Share created successfully!\n##################################");
     }
 
     //    used to search for specific share by shareID
@@ -197,16 +208,16 @@ public class Admin implements FileNames, TeamConstants {
     }
 
     //    used by user to sell shares using the ID of trams
-    public void sellShares(Team buyer_team, Team from_team, int quantity) {
+    public boolean sellShares(Team buyer_team, Team from_team, int quantity) {
 //        check if the buyer team exists
         if (getTeamFromArrayUsingID(buyer_team.getTeam_id()) == null) {
             System.out.println("Buyer Team not found");
-            return;
+            return false;
         }
 //        check if the from team exists
         if (getTeamFromArrayUsingID(from_team.getTeam_id()) == null) {
             System.out.println("From Team not found");
-            return;
+            return false;
         }
 
         // get the share
@@ -223,10 +234,11 @@ public class Admin implements FileNames, TeamConstants {
                 // update the available_self_shares_quantity of the from team
                 from_team.setAvailable_self_shares_quantity(quantity + from_team.getAvailable_self_shares_quantity());
                 System.out.println("Share sold successfully");
-                return;
+                return false;
             }
         }
         System.out.println("Share not found");
+        return true;
     }
 
     //    used to print details of given arrayList of shares
@@ -257,7 +269,7 @@ public class Admin implements FileNames, TeamConstants {
     }
 
     //    used to save shares into files
-    public void saveSharesToFile() {
+    public boolean saveSharesToFile() {
         try {
             // creating new Write instance
             Writer writer = new FileWriter(FileNames.SHARES_FILENAME);
@@ -271,23 +283,26 @@ public class Admin implements FileNames, TeamConstants {
         } catch (IOException e) {
             //noinspection CallToPrintStackTrace
             e.printStackTrace();
+            return false;
         }
+        return true;
     }
 
     //    used to load shares from files
-    public void loadSharesFromFile() {
+    public boolean loadSharesFromFile() {
         String fileContentString;
         try {
             // Check if file exists first
-            if (!Files.exists(Paths.get(FileNames.SHARES_FILENAME))) {
+            Path sharesFilenamePath = Paths.get(FileNames.SHARES_FILENAME);
+            if (!Files.exists(sharesFilenamePath)) {
                 System.out.println("Shares file does not exist. Starting with empty shares list.");
-                return;
+                return false;
             }
             // store the file content as 1 string in fileContentString
-            fileContentString = Files.readString(Paths.get(FileNames.SHARES_FILENAME));
+            fileContentString = Files.readString(sharesFilenamePath);
         } catch (IOException e) {
             System.out.println("Error reading shares file: " + e.getMessage());
-            return;
+            return false;
         }
         if (fileContentString.isBlank()) {
             System.out.println("Shares file is empty");
@@ -304,26 +319,30 @@ public class Admin implements FileNames, TeamConstants {
                 addSharesWhenLoadFromFile(Integer.parseInt(tokens[1]), getTeamFromArrayUsingID(tokens[2]), getTeamFromArrayUsingID(tokens[3]), tokens[4]);
             }
         }
+        System.out.println("Shares Loaded Successfully!");
+        return true;
     }
 
     //    used to add percent to specific share
-    public void addPercentOfShareOfSpecificTeam(Team team, long added_percent) {
+    public boolean addPercentOfShareOfSpecificTeam(Team team, int added_percent) {
 //        check if the team exists
         if (getTeamFromArrayUsingID(team.getTeam_id()) == null) {
             System.out.println("Buyer Team not found");
-            return;
+            return false;
         }
         team.setSelf_share_price(team.getSelf_share_price() + ((double) added_percent / 100 * team.getSelf_share_price()));
+        return true;
     }
 
     //    used to subtract percent from specific share
-    public void subtractPercentOfShareOfSpecificTeam(Team team, long added_percent) {
+    public boolean subtractPercentOfShareOfSpecificTeam(Team team, long added_percent) {
 //        check if the team exists
         if (getTeamFromArrayUsingID(team.getTeam_id()) == null) {
             System.out.println("Buyer Team not found");
-            return;
+            return false;
         }
         team.setSelf_share_price(team.getSelf_share_price() - ((double) added_percent / 100 * team.getSelf_share_price()));
+        return true;
     }
 
 }
