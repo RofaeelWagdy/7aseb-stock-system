@@ -31,11 +31,12 @@ public class Admin implements FileNames {
         if (!teamsArray.isEmpty()) {
             System.out.println("Teams:");
             for (Team team : teamsArray) {
+                System.out.println("Team ID: " + team.getTeam_id());
                 System.out.println("Team Name: " + team.getTeam_name());
                 System.out.println("Team Available Stock Quantity: " + team.getAvailable_self_shares_quantity());
                 System.out.println("Team Stock Price: " + team.getSelf_share_price());
                 System.out.println("Team Balance: " + team.getBalance());
-                System.out.println("Team Bought Stocks: " + team.getBought_shares());
+                System.out.println("Team Bought Stocks: " + team.getBought_shares().size());
                 System.out.println();
             }
         } else {
@@ -149,6 +150,7 @@ public class Admin implements FileNames {
 //    used to print details of given arrayList of shares
     public void displaySpecificShares(ArrayList<Share> shares) {
         for (Share share : shares) {
+            System.out.println("Share ID: " + share.getShare_id());
             System.out.println("quantity: " + share.getQuantity());
             System.out.println("buyer team: " + share.getBuyer_Team().getTeam_name());
             System.out.println("from team: " + share.getFrom_Team().getTeam_name());
