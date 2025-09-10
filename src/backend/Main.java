@@ -1,14 +1,66 @@
 package backend;
 
+import java.util.ArrayList;
 import java.util.Scanner;
 
 public class Main {
+
+    static Admin admin = new Admin();
+
+    public static boolean createTeamFromFrontEnd(String teamName) {
+        return admin.createTeam(teamName);
+    }
+
+    public static boolean loadTeamsFromFileFromFrontEnd() {
+        return admin.loadTeamsFromFile();
+    }
+
+    public static boolean loadSharesFromFileFromFrontEnd() {
+        return admin.loadSharesFromFile();
+    }
+
+    public static boolean saveTeamsToFileFromFrontEnd() {
+        return admin.saveTeamsToFile();
+    }
+
+    public static boolean saveSharesToFileFromFrontEnd() {
+        return admin.saveSharesToFile();
+    }
+
+    public static ArrayList<Team> getTeamsFromFrontEnd() {
+        return admin.getTeamsArray();
+    }
+
+    public static boolean buySharesFromFrontEnd(Team buyerTeam, Team from_team, int quantity) {
+        return admin.buyShares(quantity, buyerTeam, from_team);
+    }
+
+    public static boolean sellSharesFromFrontEnd(Team buyerTeam, Team from_team, int quantity) {
+        return admin.sellShares(buyerTeam, from_team, quantity);
+    }
+
+    public static double getTotalAssetsOfTeam(Team team) {
+        return team.calculateTotal_assets();
+    }
+
+    public static boolean addPercentToSharePriceFromFrontEnd(Team team, int added_percent) {
+        return admin.addPercentOfShareOfSpecificTeam(team, added_percent);
+    }
+
+    public static boolean subtractPercentFromSharePriceFromFrontEnd(Team team, int subtracted_percent) {
+        return admin.subtractPercentOfShareOfSpecificTeam(team, subtracted_percent);
+    }
+
+
+
+
+
     public static void main(String[] args) {
         Scanner scanner = new Scanner(System.in);
         Admin admin = new Admin();
         admin.loadTeamsFromFile();
         admin.loadSharesFromFile();
-        String teamID, shareID, buyerTeamID, fromTeamID;
+        String teamID, buyerTeamID, fromTeamID;
         int quantity;
 
         int choice;
@@ -49,9 +101,9 @@ public class Main {
                     break;
                 case 4:
                     System.out.println("Enter the ID of the buyer team:");
-                     buyerTeamID = scanner.nextLine();
+                    buyerTeamID = scanner.nextLine();
                     System.out.println("Enter the ID of the from team:");
-                     fromTeamID = scanner.nextLine();
+                    fromTeamID = scanner.nextLine();
                     System.out.println("Enter the quantity of the shares:");
                     quantity = scanner.nextInt();
                     admin.sellShares(admin.getTeamFromArrayUsingID(buyerTeamID), admin.getTeamFromArrayUsingID(fromTeamID), quantity);
