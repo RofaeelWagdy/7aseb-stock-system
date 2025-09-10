@@ -66,13 +66,19 @@ public class Admin implements FileNames {
     public void loadTeamsFromFile() {
         String fileContentString;
         try {
+            // Check if file exists first
+            if (!Files.exists(Paths.get(FileNames.TEAMS_FILENAME))) {
+                System.out.println("Teams file does not exist. Starting with empty teams list.");
+                return;
+            }
             // store the file content as 1 string in fileContentString
             fileContentString = Files.readString(Paths.get(FileNames.TEAMS_FILENAME));
         } catch (IOException e) {
-            throw new RuntimeException(e);
+            System.out.println("Error reading teams file: " + e.getMessage());
+            return;
         }
         if (fileContentString.isBlank()) {
-            System.out.println("File is empty");
+            System.out.println("Teams file is empty");
         } else {
             // separating each line and storing it in a String array
             String[] lines = fileContentString.split("\n");
@@ -191,13 +197,19 @@ public class Admin implements FileNames {
     public void loadSharesFromFile() {
         String fileContentString;
         try {
+            // Check if file exists first
+            if (!Files.exists(Paths.get(FileNames.SHARES_FILENAME))) {
+                System.out.println("Shares file does not exist. Starting with empty shares list.");
+                return;
+            }
             // store the file content as 1 string in fileContentString
             fileContentString = Files.readString(Paths.get(FileNames.SHARES_FILENAME));
         } catch (IOException e) {
-            throw new RuntimeException(e);
+            System.out.println("Error reading shares file: " + e.getMessage());
+            return;
         }
         if (fileContentString.isBlank()) {
-            System.out.println("File is empty");
+            System.out.println("Shares file is empty");
         } else {
             // separating each line and storing it in a String array
             String[] lines = fileContentString.split("\n");
