@@ -8,73 +8,82 @@ public class Main {
         Admin admin = new Admin();
         admin.loadTeamsFromFile();
         admin.loadSharesFromFile();
+        String teamID, shareID, buyerTeamID, fromTeamID;
+        int quantity;
 
         int choice;
         do {
-            System.out.println("1- Create Team\n2- Display Teams\n3- Save Teams\n4- Buy Share\n5- Sell Share\n6- Display Shares\n7- Save Shares\n8- Display Shares of Specific Team\n9- Show Total Assets of Specific Team\n10- Add Percent to Team's Share\n11- Subtract from Team's Share\n0- Exit");
+            System.out.println("1- Create Team" +
+                    "\n2- Display Teams" +
+                    "\n3- Buy Share" +
+                    "\n4- Sell Share" +
+                    "\n5- Display Shares" +
+                    "\n6- Display Shares of Specific Team" +
+                    "\n7- Show Total Assets of Specific Team" +
+                    "\n8- Add Percent to Team's Share" +
+                    "\n9- Subtract from Team's Share" +
+                    "\n0- Exit");
             System.out.print("Enter your choice: ");
             choice = scanner.nextInt();
             scanner.nextLine();
-            String teamID, shareID;
             switch (choice) {
                 case 1:
-                    System.out.println("Enter the ID of the team:");
-                    teamID = scanner.nextLine();
                     System.out.println("Enter the name of the team:");
                     String teamName = scanner.nextLine();
-                    admin.createTeam(teamID, teamName);
+                    admin.createTeam(teamName);
+                    admin.saveTeamsToFile();
                     break;
                 case 2:
                     admin.displayTeams();
                     break;
                 case 3:
+                    System.out.println("Enter the ID of the buyer team:");
+                    buyerTeamID = scanner.nextLine();
+                    System.out.println("Enter the ID of the from team:");
+                    fromTeamID = scanner.nextLine();
+                    System.out.println("Enter the quantity of the shares:");
+                    quantity = scanner.nextInt();
+                    admin.buyShares(quantity, admin.getTeamFromArrayUsingID(buyerTeamID), admin.getTeamFromArrayUsingID(fromTeamID));
                     admin.saveTeamsToFile();
+                    admin.saveSharesToFile();
                     break;
                 case 4:
                     System.out.println("Enter the ID of the buyer team:");
-                    String buyerTeamID = scanner.nextLine();
+                     buyerTeamID = scanner.nextLine();
                     System.out.println("Enter the ID of the from team:");
-                    String fromTeamID = scanner.nextLine();
-                    System.out.println("Enter the ID of the share:");
-                    shareID = scanner.nextLine();
+                     fromTeamID = scanner.nextLine();
                     System.out.println("Enter the quantity of the shares:");
-                    int quantity = scanner.nextInt();
-                    admin.buyShares(shareID, quantity, admin.getTeamFromArrayUsingID(buyerTeamID), admin.getTeamFromArrayUsingID(fromTeamID));
-                    break;
-                case 5:
-                    System.out.println("Enter the ID of the Share:");
-                    shareID = scanner.nextLine();
-                    admin.sellShares(shareID);
-                    break;
-                case 6:
-                    admin.displayTotalShares();
-                    break;
-                case 7:
+                    quantity = scanner.nextInt();
+                    admin.sellShares(admin.getTeamFromArrayUsingID(buyerTeamID), admin.getTeamFromArrayUsingID(fromTeamID), quantity);
+                    admin.saveTeamsToFile();
                     admin.saveSharesToFile();
                     break;
-                case 8:
+                case 5:
+                    admin.displayTotalShares();
+                    break;
+                case 6:
                     System.out.println("Enter the ID of the team:");
                     teamID = scanner.nextLine();
                     admin.displaySharesForSpecificTeam(admin.getTeamFromArrayUsingID(teamID));
                     break;
-                case 9:
+                case 7:
                     System.out.println("Enter the ID of the team:");
                     teamID = scanner.nextLine();
-                    System.out.println(admin.calculateTotalAssetsOfSpecificTeam(admin.getTeamFromArrayUsingID(teamID)));
+//                    System.out.println(admin.calculateTotalAssetsOfSpecificTeam(admin.getTeamFromArrayUsingID(teamID)));
                     break;
-                case 10:
+                case 8:
                     System.out.println("Enter the ID of the team: ");
                     teamID = scanner.nextLine();
                     System.out.println("Enter the percent u want to add: ");
                     int added_percent = scanner.nextInt();
-                    admin.addPercentOfShareOfSpecificTeam(admin.getTeamFromArrayUsingID(teamID),  added_percent);
+                    admin.addPercentOfShareOfSpecificTeam(admin.getTeamFromArrayUsingID(teamID), added_percent);
                     break;
-                case 11:
+                case 9:
                     System.out.println("Enter the ID of the team: ");
                     teamID = scanner.nextLine();
                     System.out.println("Enter the percent u want to subtract: ");
                     int subtracted_percent = scanner.nextInt();
-                    admin.subtractPercentOfShareOfSpecificTeam(admin.getTeamFromArrayUsingID(teamID),  subtracted_percent);
+                    admin.subtractPercentOfShareOfSpecificTeam(admin.getTeamFromArrayUsingID(teamID), subtracted_percent);
                     break;
                 case 0:
                     System.out.println("Exiting...");
