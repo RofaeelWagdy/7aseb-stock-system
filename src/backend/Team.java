@@ -1,6 +1,6 @@
 package backend;
 
-import constants.TeamConstants;
+import backend.constants.TeamConstants;
 
 import java.util.ArrayList;
 

@@ -1,4 +1,4 @@
-package constants;
+package backend.constants;
 
 public interface TeamConstants {
     int AVAILABLE_STOCK_QUANTITY = 100;

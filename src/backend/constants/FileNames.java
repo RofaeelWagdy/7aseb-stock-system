@@ -1,4 +1,4 @@
-package constants;
+package backend.constants;
 
 public interface FileNames {
     String TEAMS_FILENAME = "Teams.txt";
