@@ -10,7 +10,7 @@ import javafx.scene.control.*;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.VBox;
 
-public class ChangeSharePriceScene implements Constants{
+public class ChangeSharePriceScene implements Constants {
     private Scene changeSharePriceScene;
 
     private NavigationBar navBar;
@@ -20,15 +20,15 @@ public class ChangeSharePriceScene implements Constants{
     private GridPane changeSharePriceFormGridPane;
     private Button changeSharePriceSubmitButton;
 
-    private void layoutInitializer(){
+    private void layoutInitializer() {
         navBar = new NavigationBar();
         mainContainer = new VBox();
         rootLayout = new VBox();
         changeSharePriceFormGridPane = new GridPane();
-        changeSharePriceSubmitButton =  new Button("Submit");
+        changeSharePriceSubmitButton = new Button("Submit");
     }
 
-    private void layoutOrganizer(){
+    private void layoutOrganizer() {
         mainContainer.getChildren().addAll(navBar.getTitleBar(), rootLayout);
         mainContainer.setSpacing(200);
 
@@ -37,7 +37,7 @@ public class ChangeSharePriceScene implements Constants{
         rootLayout.setSpacing(50);
     }
 
-    private void showChangeSharePriceFormScene(){
+    private void showChangeSharePriceFormScene() {
         Label typeOfOperationLabel = new Label("Type of operation:");
         Label teamLabel = new Label("Choose Team");
         Label valueOfPercentLabel = new Label("Value of %");
@@ -67,33 +67,47 @@ public class ChangeSharePriceScene implements Constants{
         changeSharePriceFormGridPane.setVgap(20);
 
         changeSharePriceSubmitButton.setOnAction(_ -> {
-            if (selectOperationTypeComboBox.getValue().equals("Add")) {
-                addPercentToSharePrice(selectTeamComboBox.getValue(), Integer.parseInt(valueOfPercentTextField.getText()));
+            if ((selectTeamComboBox.getValue() == null) || (valueOfPercentTextField.getText().isEmpty())) {
+                PopUp.display("Empty Fields", "Empty Fields\nMake Sure You Have Filled All Fields", true);
             } else {
-                subtractPercentFromSharePrice(selectTeamComboBox.getValue(), Integer.parseInt(valueOfPercentTextField.getText()));
+                if (selectOperationTypeComboBox.getValue().equals("Add")) {
+                    addPercentToSharePrice(selectTeamComboBox.getValue(), Integer.parseInt(valueOfPercentTextField.getText()));
+                } else {
+                    subtractPercentFromSharePrice(selectTeamComboBox.getValue(), Integer.parseInt(valueOfPercentTextField.getText()));
+                }
+                valueOfPercentTextField.clear();
+                selectTeamComboBox.getSelectionModel().clearSelection();
             }
-            valueOfPercentTextField.clear();
-            selectTeamComboBox.getSelectionModel().clearSelection();
         });
     }
 
     private void addPercentToSharePrice(Team team, int added_percent) {
-        if(Main.addPercentToSharePriceFromFrontEnd(team, added_percent)){
-            PopUp.display("Percent Added Successfully", "Percent Added Successfully", false);
+        switch (Main.addPercentToSharePriceFromFrontEnd(team, added_percent)) {
+            case 0:
+                PopUp.display("Percent Added Successfully", "Percent Added Successfully", false);
+                break;
+            case 1:
+                PopUp.display("Error Adding Percent", "Selected \"Team\" not found", true);
+                break;
         }
     }
 
     private void subtractPercentFromSharePrice(Team team, int subtracted_percent) {
-        if(Main.subtractPercentFromSharePriceFromFrontEnd(team, subtracted_percent)){
-            PopUp.display("Percent Subtracted Successfully", "Percent Subtracted Successfully", false);
+        switch (Main.subtractPercentFromSharePriceFromFrontEnd(team, subtracted_percent)) {
+            case 0:
+                PopUp.display("Percent Subtracted Successfully", "Percent Subtracted Successfully", false);
+                break;
+            case 1:
+                PopUp.display("Error Subtracting Percent", "Selected \"Team\" not found", true);
+                break;
         }
     }
 
-    private void setScene(){
+    private void setScene() {
         changeSharePriceScene = new Scene(mainContainer, Constants.SCENE_WIDTH, Constants.SCENE_HEIGHT);
     }
 
-    public Scene getScene(){
+    public Scene getScene() {
         layoutInitializer();
         layoutOrganizer();
         showChangeSharePriceFormScene();

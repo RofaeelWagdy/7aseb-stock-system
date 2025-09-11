@@ -76,23 +76,65 @@ public class SharesTransactionScene implements Constants {
         sharesTransactionFormGridPane.setVgap(20);
 
         sharesTransactionSubmitButton.setOnAction(_ -> {
-            if (selectTransactionTypeComboBox.getValue().equals("Buy")) {
-                buyShares(selectBuyerTeamComboBox.getValue(), selectFromTeamComboBox.getValue(), Integer.parseInt(quantitySharesTextField.getText()));
+            if ((selectBuyerTeamComboBox.getValue() == null) || (selectFromTeamComboBox.getValue() == null) || (quantitySharesTextField.getText().isEmpty())) {
+                PopUp.display("Empty Fields", "Empty Fields\nMake Sure You Have Filled All Fields", true);
             } else {
-                sellShares(selectBuyerTeamComboBox.getValue(), selectFromTeamComboBox.getValue(), Integer.parseInt(quantitySharesTextField.getText()));
+                if (selectTransactionTypeComboBox.getValue().equals("Buy")) {
+                    buyShares(selectBuyerTeamComboBox.getValue(), selectFromTeamComboBox.getValue(), Integer.parseInt(quantitySharesTextField.getText()));
+                } else {
+                    sellShares(selectBuyerTeamComboBox.getValue(), selectFromTeamComboBox.getValue(), Integer.parseInt(quantitySharesTextField.getText()));
+                }
+                quantitySharesTextField.clear();
             }
-            quantitySharesTextField.clear();
         });
     }
 
     private void buyShares(Team buyerTeam, Team fromTeam, int quantity) {
-        if (Main.buySharesFromFrontEnd(buyerTeam, fromTeam, quantity))
-            PopUp.display("Shares Bought Successfully", "Shares Bought Successfully", false);
+//        buy shares validations
+        switch (Main.buySharesFromFrontEnd(buyerTeam, fromTeam, quantity)) {
+            case 0:
+                PopUp.display("Shares Bought Successfully", "Shares Bought Successfully", false);
+                break;
+            case 1:
+                PopUp.display("Error Buying Shares", "\"Buyer Team\" not found", true);
+                break;
+            case 2:
+                PopUp.display("Error Buying Shares", "\"From Team\" not found", true);
+                break;
+            case 3:
+                PopUp.display("Error Buying Shares", "\"Buyer Team\" Doesn't Have Enough Balance", true);
+                break;
+            case 4:
+                PopUp.display("Error Buying Shares", "\"From Team\" Doesn't Have Available Shares to Buy From", true);
+                break;
+            case 5:
+                PopUp.display("Error Buying Shares", "You Have Bought From That Team Before\nYou Can Only Buy 20 Shares From Any Team", true);
+                break;
+            case 6:
+                PopUp.display("Error Buying Shares", "You Can Only Buy 20 Shares From Any Team", true);
+                break;
+        }
+
     }
 
     private void sellShares(Team buyerTeam, Team fromTeam, int quantity) {
-        if (Main.sellSharesFromFrontEnd(buyerTeam, fromTeam, quantity))
-            PopUp.display("Shares Sold Successfully", "Shares Sold Successfully", false);
+        switch (Main.sellSharesFromFrontEnd(buyerTeam, fromTeam, quantity)) {
+            case 0:
+                PopUp.display("Shares Sold Successfully", "Shares Sold Successfully", false);
+                break;
+            case 1:
+                PopUp.display("Error Selling Shares", "\"Buyer Team\" not found", true);
+                break;
+            case 2:
+                PopUp.display("Error Selling Shares", "\"From Team\" not found", true);
+                break;
+            case 3:
+                PopUp.display("Error Selling Shares", "This \"Buyer Team\" Hasn't Bought Any Shares From This \"From Team\"", true);
+                break;
+            case 4:
+                PopUp.display("Error Selling Shares", "The Entered Quantity is More Than The Bought Quantity Of Shares", true);
+                break;
+        }
     }
 
     private void setScene() {

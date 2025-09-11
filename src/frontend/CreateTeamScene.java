@@ -20,7 +20,7 @@ public class CreateTeamScene {
     private Button createTeamSubmitButton;
 
 
-    private void layoutInitializer(){
+    private void layoutInitializer() {
         mainContainer = new VBox();
         rootLayout = new VBox();
         createTeamFormHBox = new HBox();
@@ -28,7 +28,7 @@ public class CreateTeamScene {
         createTeamSubmitButton = new Button("Create Team");
     }
 
-    private void layoutOrganizer(){
+    private void layoutOrganizer() {
         mainContainer.getChildren().addAll(navBar.getTitleBar(), rootLayout);
         mainContainer.setSpacing(200);
 
@@ -37,32 +37,36 @@ public class CreateTeamScene {
         rootLayout.setSpacing(30);
     }
 
-    private void setScene(){
+    private void setScene() {
         createTeamScene = new Scene(mainContainer, Constants.SCENE_WIDTH, Constants.SCENE_HEIGHT);
     }
 
-    private void showCreateTeamForm(){
+    private void showCreateTeamForm() {
         Label teamNameLabel = new Label("Team Name");
 
         TextField teamNameTextField = new TextField();
         teamNameTextField.setPromptText("Team Name");
 
-        createTeamFormHBox.getChildren().addAll(teamNameLabel,  teamNameTextField);
+        createTeamFormHBox.getChildren().addAll(teamNameLabel, teamNameTextField);
         createTeamFormHBox.setSpacing(20);
         createTeamFormHBox.setAlignment(Pos.CENTER);
 
         createTeamSubmitButton.setOnAction(_ -> {
-            createTeam(teamNameTextField.getText());
-            teamNameTextField.clear();
+            if (teamNameTextField.getText().isEmpty()) {
+                PopUp.display("Enter Team Name", "Please Enter Team Name", true);
+            } else {
+                createTeam(teamNameTextField.getText());
+                teamNameTextField.clear();
+            }
         });
     }
 
-    private void createTeam(String teamName){
+    private void createTeam(String teamName) {
         Main.createTeamFromFrontEnd(teamName);
         PopUp.display("Team Created", "Team Created Successfully", false);
     }
 
-    public Scene getScene(){
+    public Scene getScene() {
 //        this.mainWindow = mainWindow;
         layoutInitializer();
         layoutOrganizer();
