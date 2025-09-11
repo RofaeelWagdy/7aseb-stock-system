@@ -136,26 +136,26 @@ public class Admin implements FileNames, TeamConstants {
 
 
     //    used when buying share by team from another team
-    public boolean buyShares(int quantity, Team buyer_team, Team from_team) {
+    public int buyShares(int quantity, Team buyer_team, Team from_team) {
 //        check if the buyer team exists
         if (getTeamFromArrayUsingID(buyer_team.getTeam_id()) == null) {
             System.out.println("Buyer Team not found");
-            return false;
+            return 1;
         }
 //        check if the from team exists
         if (getTeamFromArrayUsingID(from_team.getTeam_id()) == null) {
             System.out.println("From Team not found");
-            return false;
+            return 2;
         }
 //        check if the buyer has enough balance to buy the share
         if (buyer_team.getBalance() < (from_team.getSelf_share_price() * quantity)) {
             System.out.println("Insufficient balance");
-            return false;
+            return 3;
         }
 //        check if the from team has available shares to buy from
         if (from_team.getAvailable_self_shares_quantity() < quantity) {
             System.out.println("From Team doesn't have enough self shares");
-            return false;
+            return 4;
         }
 //        check if the buyer has already bought the same team before
         if (buyer_team.isBoughtFromSpecificTeam(from_team) != null) {
@@ -164,7 +164,7 @@ public class Admin implements FileNames, TeamConstants {
             if ((buyer_team.isBoughtFromSpecificTeam(from_team).getQuantity() + quantity) > TeamConstants.ALLOWED_NUMBER_SHARES_TO_BUY_FROM_EACH_TEAM) {
                 System.out.println("7aseeeeeb .... U can only buy 20 shares from any team");
                 System.out.println("U have already bought " + buyer_team.isBoughtFromSpecificTeam(from_team).getQuantity() + " shares");
-                return false;
+                return 5;
             }
             System.out.println("You have bought from this team before");
             Share oldShare = buyer_team.isBoughtFromSpecificTeam(from_team);
@@ -175,7 +175,7 @@ public class Admin implements FileNames, TeamConstants {
 //        check for the "only 20 shares from any team" rule
             if (quantity > 20) {
                 System.out.println("U can only buy 20 shares from any team");
-                return false;
+                return 6;
             }
             String generatedShareID = idGenerator.generateShareID();
             Share newShare = new Share(generatedShareID, quantity, buyer_team, from_team);
@@ -184,7 +184,7 @@ public class Admin implements FileNames, TeamConstants {
             from_team.setAvailable_self_shares_quantity(from_team.getAvailable_self_shares_quantity() - quantity);
         }
         System.out.println("Share created successfully!\n##################################");
-        return true;
+        return 0;
     }
 
     //    used by program to create shares that are loaded from the file
@@ -208,37 +208,42 @@ public class Admin implements FileNames, TeamConstants {
     }
 
     //    used by user to sell shares using the ID of trams
-    public boolean sellShares(Team buyer_team, Team from_team, int quantity) {
+    public int sellShares(Team buyer_team, Team from_team, int quantity) {
 //        check if the buyer team exists
         if (getTeamFromArrayUsingID(buyer_team.getTeam_id()) == null) {
             System.out.println("Buyer Team not found");
-            return false;
+            return 1;
         }
 //        check if the from team exists
         if (getTeamFromArrayUsingID(from_team.getTeam_id()) == null) {
             System.out.println("From Team not found");
-            return false;
+            return 2;
         }
 
         // get the share
         for (Share share : buyer_team.getBought_shares()) {
             if (Objects.equals(share.getFrom_Team().getTeam_id(), from_team.getTeam_id())) {
-                // remove the share from the bought shares array
-                // buyer team :
-                // remove the quantity from the buyer team
-                share.setQuantity(share.getQuantity() - quantity);
-                // add the balance to the buyer team
-                buyer_team.setBalance(buyer_team.getBalance() + (quantity * from_team.getSelf_share_price()));
+                if (share.getQuantity() < quantity) {
+                    System.out.println("The Entered Quantity is More Than The Bought Quantity Of Shares");
+                    return 4;
+                } else {
+                    // remove the share from the bought shares array
+                    // buyer team :
+                    // remove the quantity from the buyer team
+                    share.setQuantity(share.getQuantity() - quantity);
+                    // add the balance to the buyer team
+                    buyer_team.setBalance(buyer_team.getBalance() + (quantity * from_team.getSelf_share_price()));
 
-                // from team :
-                // update the available_self_shares_quantity of the from team
-                from_team.setAvailable_self_shares_quantity(quantity + from_team.getAvailable_self_shares_quantity());
-                System.out.println("Share sold successfully");
-                return false;
+                    // from team :
+                    // update the available_self_shares_quantity of the from team
+                    from_team.setAvailable_self_shares_quantity(quantity + from_team.getAvailable_self_shares_quantity());
+                    System.out.println("Share sold successfully");
+                    return 0;
+                }
             }
         }
         System.out.println("Share not found");
-        return true;
+        return 3;
     }
 
     //    used to print details of given arrayList of shares
@@ -324,25 +329,25 @@ public class Admin implements FileNames, TeamConstants {
     }
 
     //    used to add percent to specific share
-    public boolean addPercentOfShareOfSpecificTeam(Team team, int added_percent) {
+    public int addPercentOfShareOfSpecificTeam(Team team, int added_percent) {
 //        check if the team exists
         if (getTeamFromArrayUsingID(team.getTeam_id()) == null) {
             System.out.println("Buyer Team not found");
-            return false;
+            return 1;
         }
         team.setSelf_share_price(team.getSelf_share_price() + ((double) added_percent / 100 * team.getSelf_share_price()));
-        return true;
+        return 0;
     }
 
     //    used to subtract percent from specific share
-    public boolean subtractPercentOfShareOfSpecificTeam(Team team, long added_percent) {
+    public int subtractPercentOfShareOfSpecificTeam(Team team, long added_percent) {
 //        check if the team exists
         if (getTeamFromArrayUsingID(team.getTeam_id()) == null) {
             System.out.println("Buyer Team not found");
-            return false;
+            return 1;
         }
         team.setSelf_share_price(team.getSelf_share_price() - ((double) added_percent / 100 * team.getSelf_share_price()));
-        return true;
+        return 0;
     }
 
 }

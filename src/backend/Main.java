@@ -31,11 +31,11 @@ public class Main {
         return admin.getTeamsArray();
     }
 
-    public static boolean buySharesFromFrontEnd(Team buyerTeam, Team from_team, int quantity) {
+    public static int buySharesFromFrontEnd(Team buyerTeam, Team from_team, int quantity) {
         return admin.buyShares(quantity, buyerTeam, from_team);
     }
 
-    public static boolean sellSharesFromFrontEnd(Team buyerTeam, Team from_team, int quantity) {
+    public static int sellSharesFromFrontEnd(Team buyerTeam, Team from_team, int quantity) {
         return admin.sellShares(buyerTeam, from_team, quantity);
     }
 
@@ -43,11 +43,11 @@ public class Main {
         return team.calculateTotal_assets();
     }
 
-    public static boolean addPercentToSharePriceFromFrontEnd(Team team, int added_percent) {
+    public static int addPercentToSharePriceFromFrontEnd(Team team, int added_percent) {
         return admin.addPercentOfShareOfSpecificTeam(team, added_percent);
     }
 
-    public static boolean subtractPercentFromSharePriceFromFrontEnd(Team team, int subtracted_percent) {
+    public static int subtractPercentFromSharePriceFromFrontEnd(Team team, int subtracted_percent) {
         return admin.subtractPercentOfShareOfSpecificTeam(team, subtracted_percent);
     }
 
