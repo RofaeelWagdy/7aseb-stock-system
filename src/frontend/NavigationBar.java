@@ -21,7 +21,7 @@ public class NavigationBar {
 
         Button createTeamButton = new Button("Create Team");
         createTeamButton.setOnAction(_ -> MainWindow.showCreateTeamScene());
-        Button makeSharesTransactionsButton = new Button("Buy Shares");
+        Button makeSharesTransactionsButton = new Button("Buy/Sell Shares");
         makeSharesTransactionsButton.setOnAction(_ -> MainWindow.showSharesTransactionScene());
         Button stockMarketButton = new Button("Show Stocks Market");
         stockMarketButton.setOnAction(_ -> MainWindow.showStockMarketScene());
