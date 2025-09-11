@@ -94,6 +94,8 @@ public class SharesTransactionScene implements Constants {
         switch (Main.buySharesFromFrontEnd(buyerTeam, fromTeam, quantity)) {
             case 0:
                 PopUp.display("Shares Bought Successfully", "Shares Bought Successfully", false);
+                Main.saveTeamsToFileFromFrontEnd();
+                Main.saveSharesToFileFromFrontEnd();
                 break;
             case 1:
                 PopUp.display("Error Buying Shares", "\"Buyer Team\" not found", true);
@@ -114,13 +116,14 @@ public class SharesTransactionScene implements Constants {
                 PopUp.display("Error Buying Shares", "You Can Only Buy 20 Shares From Any Team", true);
                 break;
         }
-
     }
 
     private void sellShares(Team buyerTeam, Team fromTeam, int quantity) {
         switch (Main.sellSharesFromFrontEnd(buyerTeam, fromTeam, quantity)) {
             case 0:
                 PopUp.display("Shares Sold Successfully", "Shares Sold Successfully", false);
+                Main.saveTeamsToFileFromFrontEnd();
+                Main.saveSharesToFileFromFrontEnd();
                 break;
             case 1:
                 PopUp.display("Error Selling Shares", "\"Buyer Team\" not found", true);

@@ -85,6 +85,8 @@ public class ChangeSharePriceScene implements Constants {
         switch (Main.addPercentToSharePriceFromFrontEnd(team, added_percent)) {
             case 0:
                 PopUp.display("Percent Added Successfully", "Percent Added Successfully", false);
+                Main.saveTeamsToFileFromFrontEnd();
+                Main.saveSharesToFileFromFrontEnd();
                 break;
             case 1:
                 PopUp.display("Error Adding Percent", "Selected \"Team\" not found", true);
@@ -96,6 +98,8 @@ public class ChangeSharePriceScene implements Constants {
         switch (Main.subtractPercentFromSharePriceFromFrontEnd(team, subtracted_percent)) {
             case 0:
                 PopUp.display("Percent Subtracted Successfully", "Percent Subtracted Successfully", false);
+                Main.saveTeamsToFileFromFrontEnd();
+                Main.saveSharesToFileFromFrontEnd();
                 break;
             case 1:
                 PopUp.display("Error Subtracting Percent", "Selected \"Team\" not found", true);

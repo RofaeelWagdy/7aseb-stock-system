@@ -63,6 +63,8 @@ public class CreateTeamScene {
 
     private void createTeam(String teamName) {
         Main.createTeamFromFrontEnd(teamName);
+        Main.saveTeamsToFileFromFrontEnd();
+        Main.saveSharesToFileFromFrontEnd();
         PopUp.display("Team Created", "Team Created Successfully", false);
     }
 
