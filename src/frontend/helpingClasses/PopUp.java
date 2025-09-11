@@ -22,9 +22,9 @@ public class PopUp {
 
         Image logo;
         if (error) {
-            logo = new Image(new File("src/resources/crc_error.png").toURI().toString());
+            logo = new Image(new File("resources/crc_error.png").toURI().toString());
         } else {
-            logo = new Image(new File("src/resources/crc.png").toURI().toString());
+            logo = new Image(new File("resources/crc.png").toURI().toString());
         }
         ImageView logoView = new ImageView(logo);
         logoView.setFitWidth(50);
@@ -39,9 +39,10 @@ public class PopUp {
         VBox alertLayout = new VBox(20);
         alertLayout.getChildren().addAll(messageLayout, closeButton);
         alertLayout.setAlignment(Pos.CENTER);
+        alertLayout.getStyleClass().add("pop-up");
 
-        Scene alertScene = new Scene(alertLayout, 500, 150);
-//        alertScene.getStylesheets().add(AlertBox.class.getResource("styles.css").toExternalForm());
+        Scene alertScene = new Scene(alertLayout, 500, 200);
+        alertScene.getStylesheets().add(PopUp.class.getResource("/styles.css").toExternalForm());
 
         messageLayout.getChildren().add(logoView);
         messageLayout.getChildren().add(alertMessage);

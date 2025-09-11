@@ -22,7 +22,7 @@ public class ConfirmBox {
 
         Label alertMessage = new Label(message);
 
-        Image logo = new Image(new File("src/resources/question.png").toURI().toString());
+        Image logo = new Image(new File("resources/question.png").toURI().toString());
         ImageView logoView = new ImageView(logo);
         logoView.setFitWidth(50);
         logoView.setPreserveRatio(true);
@@ -38,12 +38,14 @@ public class ConfirmBox {
             answer = true;
             window.close();
         });
+        yesButton.getStyleClass().add("yes-button");
 
         Button noButton = new Button("No");
         noButton.setOnAction(_ -> {
             answer = false;
             window.close();
         });
+        noButton.getStyleClass().add("no-button");
 
         HBox buttonsLayout = new HBox(20);
         buttonsLayout.getChildren().addAll(yesButton, noButton);
@@ -52,9 +54,10 @@ public class ConfirmBox {
         VBox alertLayout = new VBox(20);
         alertLayout.getChildren().addAll(messageLayout, buttonsLayout);
         alertLayout.setAlignment(Pos.CENTER);
+        alertLayout.getStyleClass().add("pop-up");
 
         Scene alertScene = new Scene(alertLayout, 500, 150);
-//        alertScene.getStylesheets().add(AlertBox.class.getResource("styles.css").toExternalForm());
+        alertScene.getStylesheets().add(ConfirmBox.class.getResource("/styles.css").toExternalForm());
 
         window.setScene(alertScene);
         window.showAndWait();

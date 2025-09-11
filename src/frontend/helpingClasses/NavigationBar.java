@@ -17,6 +17,7 @@ public class NavigationBar {
 
     private void setupNavigationBar(){
         Label stockMarketTitle = new Label("Stock Market System");
+        stockMarketTitle.getStyleClass().add("stock-market-title");
 
         Button createTeamButton = new Button("Create Team");
         createTeamButton.setOnAction(_ -> MainWindow.showCreateTeamScene());
@@ -28,7 +29,7 @@ public class NavigationBar {
         changeSharePriceButton.setOnAction(_ -> MainWindow.showChangeSharePriceScene());
 
         HBox buttonsLayout = new HBox(20);
-        buttonsLayout.getChildren().addAll(createTeamButton, makeSharesTransactionsButton, stockMarketButton, changeSharePriceButton);
+        buttonsLayout.getChildren().addAll(stockMarketButton, makeSharesTransactionsButton,  changeSharePriceButton, createTeamButton);
         buttonsLayout.setAlignment(Pos.CENTER);
 
         rootLayout.getChildren().addAll(stockMarketTitle,buttonsLayout);

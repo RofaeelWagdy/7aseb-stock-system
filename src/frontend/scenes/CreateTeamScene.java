@@ -33,7 +33,7 @@ public class CreateTeamScene {
 
     private void layoutOrganizer() {
         mainContainer.getChildren().addAll(navBar.getTitleBar(), rootLayout);
-        mainContainer.setSpacing(200);
+        mainContainer.setSpacing(150);
 
         rootLayout.getChildren().addAll(createTeamFormHBox, createTeamSubmitButton);
         rootLayout.setAlignment(Pos.CENTER);
@@ -42,6 +42,7 @@ public class CreateTeamScene {
 
     private void setScene() {
         createTeamScene = new Scene(mainContainer, Constants.SCENE_WIDTH, Constants.SCENE_HEIGHT);
+        createTeamScene.getStylesheets().add(getClass().getResource("/styles.css").toExternalForm());
     }
 
     private void showCreateTeamForm() {
@@ -72,7 +73,6 @@ public class CreateTeamScene {
     }
 
     public Scene getScene() {
-//        this.mainWindow = mainWindow;
         layoutInitializer();
         layoutOrganizer();
         setScene();

@@ -25,7 +25,6 @@ public class StockMarketTableScene implements Constants {
     private TableColumn<Team, Double> balanceColumn;
     private TableColumn<Team, Double> totalAssetsColumn;
 
-    private ObservableList<Team> teamsFromBackEnd;
     private void layoutInitializer(){
         navBar = new NavigationBar();
         mainContainer = new VBox();
@@ -42,25 +41,36 @@ public class StockMarketTableScene implements Constants {
     }
     private void setScene(){
         stockMarketTableScene = new Scene(mainContainer, Constants.SCENE_WIDTH, Constants.SCENE_HEIGHT);
+        stockMarketTableScene.getStylesheets().add(getClass().getResource("/styles.css").toExternalForm());
     }
     private void tableOrganizer(){
-        teamsFromBackEnd = FXCollections.observableArrayList();
+        ObservableList<Team> teamsFromBackEnd = FXCollections.observableArrayList();
         teamsFromBackEnd.addAll(Main.getTeamsFromFrontEnd());
 
-        teamNameColumn.setMinWidth(200);
+        double columnWidth = (Constants.SCENE_WIDTH - 20) / 4;
+
+        teamNameColumn.setPrefWidth(columnWidth);
         teamNameColumn.setCellValueFactory(new PropertyValueFactory<>("team_name"));
 
-        sharePriceColumn.setMinWidth(200);
+        sharePriceColumn.setPrefWidth(columnWidth);
         sharePriceColumn.setCellValueFactory(new PropertyValueFactory<>("self_share_price"));
 
-        balanceColumn.setMinWidth(200);
+        balanceColumn.setPrefWidth(columnWidth);
         balanceColumn.setCellValueFactory(new PropertyValueFactory<>("balance"));
 
-        totalAssetsColumn.setMinWidth(200);
+        totalAssetsColumn.setPrefWidth(columnWidth);
         totalAssetsColumn.setCellValueFactory(new PropertyValueFactory<>("total_assets"));
+        totalAssetsColumn.setSortType(TableColumn.SortType.DESCENDING);
 
         stockMarketTable.setItems(teamsFromBackEnd);
+        stockMarketTable.getStyleClass().add("stock-market-table");
         stockMarketTable.getColumns().addAll(teamNameColumn, sharePriceColumn, balanceColumn, totalAssetsColumn);
+
+        stockMarketTable.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
+
+        // Set default sorting by Total Assets column in descending order
+        stockMarketTable.getSortOrder().add(totalAssetsColumn);
+        stockMarketTable.sort();
     }
 
     public Scene getScene(){

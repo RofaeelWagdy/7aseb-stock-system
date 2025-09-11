@@ -33,7 +33,7 @@ public class ChangeSharePriceScene implements Constants {
 
     private void layoutOrganizer() {
         mainContainer.getChildren().addAll(navBar.getTitleBar(), rootLayout);
-        mainContainer.setSpacing(200);
+        mainContainer.setSpacing(120);
 
         rootLayout.getChildren().addAll(changeSharePriceFormGridPane, changeSharePriceSubmitButton);
         rootLayout.setAlignment(Pos.CENTER);
@@ -112,6 +112,7 @@ public class ChangeSharePriceScene implements Constants {
 
     private void setScene() {
         changeSharePriceScene = new Scene(mainContainer, Constants.SCENE_WIDTH, Constants.SCENE_HEIGHT);
+        changeSharePriceScene.getStylesheets().add(getClass().getResource("/styles.css").toExternalForm());
     }
 
     public Scene getScene() {

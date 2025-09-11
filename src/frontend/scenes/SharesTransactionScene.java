@@ -34,7 +34,7 @@ public class SharesTransactionScene implements Constants {
 
     private void layoutOrganizer() {
         mainContainer.getChildren().addAll(navBar.getTitleBar(), rootLayout);
-        mainContainer.setSpacing(200);
+        mainContainer.setSpacing(80);
 
         rootLayout.getChildren().addAll(sharesTransactionFormGridPane, sharesTransactionSubmitButton);
         rootLayout.setAlignment(Pos.CENTER);
@@ -145,6 +145,7 @@ public class SharesTransactionScene implements Constants {
 
     private void setScene() {
         sharesTransactionScene = new Scene(mainContainer, Constants.SCENE_WIDTH, Constants.SCENE_HEIGHT);
+        sharesTransactionScene.getStylesheets().add(getClass().getResource("/styles.css").toExternalForm());
     }
 
 
