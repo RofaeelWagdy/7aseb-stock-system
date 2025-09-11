@@ -1,6 +1,12 @@
 package frontend;
 
 import backend.Main;
+import frontend.helpingClasses.ConfirmBox;
+import frontend.helpingClasses.PopUp;
+import frontend.scenes.ChangeSharePriceScene;
+import frontend.scenes.CreateTeamScene;
+import frontend.scenes.SharesTransactionScene;
+import frontend.scenes.StockMarketTableScene;
 import javafx.application.Application;
 import javafx.stage.Stage;
 

@@ -1,7 +1,9 @@
-package frontend;
+package frontend.scenes;
 
 import backend.Main;
 import backend.Team;
+import frontend.Constants;
+import frontend.helpingClasses.NavigationBar;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.scene.Scene;
@@ -11,7 +13,7 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.VBox;
 
 
-public class StockMarketTableScene implements Constants{
+public class StockMarketTableScene implements Constants {
     private Scene stockMarketTableScene;
 
     private NavigationBar navBar;

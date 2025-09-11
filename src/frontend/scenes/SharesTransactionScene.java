@@ -1,7 +1,10 @@
-package frontend;
+package frontend.scenes;
 
 import backend.Main;
 import backend.Team;
+import frontend.Constants;
+import frontend.helpingClasses.NavigationBar;
+import frontend.helpingClasses.PopUp;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.geometry.Pos;

@@ -1,6 +1,9 @@
-package frontend;
+package frontend.scenes;
 
 import backend.Main;
+import frontend.Constants;
+import frontend.helpingClasses.NavigationBar;
+import frontend.helpingClasses.PopUp;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
