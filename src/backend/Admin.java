@@ -133,8 +133,6 @@ public class Admin implements FileNames, TeamConstants {
     }
 
 
-
-
     //    used when buying share by team from another team
     public int buyShares(int quantity, Team buyer_team, Team from_team) {
 //        check if the buyer team exists
@@ -188,9 +186,9 @@ public class Admin implements FileNames, TeamConstants {
     }
 
     //    used by program to create shares that are loaded from the file
-    public void addSharesWhenLoadFromFile(int quantity, Team buyer_team, Team from_team, String time_when_bought) {
+    public void addSharesWhenLoadFromFile(int quantity, Team buyer_team, Team from_team) {
         String generatedShareID = idGenerator.generateShareID();
-        Share newShare = new Share(generatedShareID, quantity, buyer_team, from_team, time_when_bought);
+        Share newShare = new Share(generatedShareID, quantity, buyer_team, from_team);
         boughtSharesArray.add(newShare);
         buyer_team.add_bought_share_to_bought_shares_array(newShare);
     }
@@ -280,7 +278,7 @@ public class Admin implements FileNames, TeamConstants {
             Writer writer = new FileWriter(FileNames.SHARES_FILENAME);
             if (!boughtSharesArray.isEmpty()) {
                 for (Share share : boughtSharesArray) {
-                    writer.write(share.getShare_id() + "," + share.getQuantity() + "," + share.getBuyer_Team().getTeam_id() + "," + share.getFrom_Team().getTeam_id() + "," + share.getTime_when_bought_or_sold() + "\n");
+                    writer.write(share.getShare_id() + "," + share.getQuantity() + "," + share.getBuyer_Team().getTeam_id() + "," + share.getFrom_Team().getTeam_id() + "\n");
                 }
                 writer.close();
                 System.out.println("Shares Saved successfully!");
@@ -321,7 +319,7 @@ public class Admin implements FileNames, TeamConstants {
                     tokens[i] = tokens[i].trim();
 
                 // creating new backend.Team object
-                addSharesWhenLoadFromFile(Integer.parseInt(tokens[1]), getTeamFromArrayUsingID(tokens[2]), getTeamFromArrayUsingID(tokens[3]), tokens[4]);
+                addSharesWhenLoadFromFile(Integer.parseInt(tokens[1]), getTeamFromArrayUsingID(tokens[2]), getTeamFromArrayUsingID(tokens[3]));
             }
         }
         System.out.println("Shares Loaded Successfully!");
