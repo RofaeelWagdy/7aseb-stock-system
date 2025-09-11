@@ -17,9 +17,11 @@ public class Admin implements FileNames, TeamConstants {
     ArrayList<Share> boughtSharesArray = new ArrayList<>();
 
     private final IDGenerator idGenerator;
+    private final LogsWriter logsBlogger;
 
     public Admin() {
         this.idGenerator = new IDGenerator();
+        this.logsBlogger = new LogsWriter();
     }
 
 
@@ -32,6 +34,7 @@ public class Admin implements FileNames, TeamConstants {
         String generatedTeamId = idGenerator.generateTeamID();
         teamsArray.add(new Team(generatedTeamId, team_name));
         System.out.println("Team created successfully with ID: " + generatedTeamId + "\n##################################");
+        logsBlogger.blogCreatingTeam(team_name, generatedTeamId);
         return true;
     }
 
@@ -168,6 +171,7 @@ public class Admin implements FileNames, TeamConstants {
             Share oldShare = buyer_team.isBoughtFromSpecificTeam(from_team);
             buyer_team.update_existing_shares(oldShare, quantity);
             from_team.setAvailable_self_shares_quantity(from_team.getAvailable_self_shares_quantity() - quantity);
+            logsBlogger.blogBuyingShares(buyer_team.getTeam_name(), from_team.getTeam_name(), quantity, from_team.getSelf_share_price(), (from_team.getSelf_share_price() * quantity));
 
         } else {
 //        check for the "only 20 shares from any team" rule
@@ -180,6 +184,7 @@ public class Admin implements FileNames, TeamConstants {
             boughtSharesArray.add(newShare);
             buyer_team.buy_shares(newShare);
             from_team.setAvailable_self_shares_quantity(from_team.getAvailable_self_shares_quantity() - quantity);
+            logsBlogger.blogBuyingShares(buyer_team.getTeam_name(), from_team.getTeam_name(), quantity, from_team.getSelf_share_price(), (from_team.getSelf_share_price() * quantity));
         }
         System.out.println("Share created successfully!\n##################################");
         return 0;
@@ -235,6 +240,8 @@ public class Admin implements FileNames, TeamConstants {
                     // from team :
                     // update the available_self_shares_quantity of the from team
                     from_team.setAvailable_self_shares_quantity(quantity + from_team.getAvailable_self_shares_quantity());
+
+                    logsBlogger.blogSellingShares(buyer_team.getTeam_name(), from_team.getTeam_name(), quantity, from_team.getSelf_share_price(), (from_team.getSelf_share_price() * quantity));
                     System.out.println("Share sold successfully");
                     return 0;
                 }
@@ -327,24 +334,32 @@ public class Admin implements FileNames, TeamConstants {
     }
 
     //    used to add percent to specific share
-    public int addPercentOfShareOfSpecificTeam(Team team, int added_percent) {
+    public int addPercentOfShareOfSpecificTeam(Team team, double added_percent) {
 //        check if the team exists
         if (getTeamFromArrayUsingID(team.getTeam_id()) == null) {
             System.out.println("Buyer Team not found");
             return 1;
         }
-        team.setSelf_share_price(team.getSelf_share_price() + ((double) added_percent / 100 * team.getSelf_share_price()));
+        double oldSharePrice = team.getSelf_share_price();
+        double newSharePrice = oldSharePrice + (added_percent / 100 * team.getSelf_share_price());
+        team.setSelf_share_price(newSharePrice);
+
+        logsBlogger.blogAddingPercentToSharePrice(team.getTeam_name(), oldSharePrice, added_percent, newSharePrice);
         return 0;
     }
 
     //    used to subtract percent from specific share
-    public int subtractPercentOfShareOfSpecificTeam(Team team, long added_percent) {
+    public int subtractPercentOfShareOfSpecificTeam(Team team, double added_percent) {
 //        check if the team exists
         if (getTeamFromArrayUsingID(team.getTeam_id()) == null) {
             System.out.println("Buyer Team not found");
             return 1;
         }
-        team.setSelf_share_price(team.getSelf_share_price() - ((double) added_percent / 100 * team.getSelf_share_price()));
+        double oldSharePrice = team.getSelf_share_price();
+        double newSharePrice = oldSharePrice - (added_percent / 100 * team.getSelf_share_price());
+        team.setSelf_share_price(newSharePrice);
+
+        logsBlogger.blogSubtractingPercentFromSharePrice(team.getTeam_name(), oldSharePrice, added_percent, newSharePrice);
         return 0;
     }
 
