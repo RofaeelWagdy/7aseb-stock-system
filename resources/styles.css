@@ -5,10 +5,11 @@
     -fx-font-family: "Arial";
     -fx-text-fill: black;
     /*-fx-alignment: center;*/
-    /*-fx-background-image: url("file:src/frontend/assets/stock-market.jpg");*/
-    -fx-background-size: cover;
-    -fx-background-position: center center;
-    -fx-background-repeat: no-repeat;
+    /*-fx-background-image: url("stocks.jpg");*/
+    /*-fx-background-size: cover;*/
+    /*-fx-background-position: center center;*/
+    /*-fx-background-repeat: no-repeat;*/
+    /*-fx-opacity: 0.8;*/
 }
 
 .stock-market-title {
@@ -18,7 +19,6 @@
     -fx-effect: dropshadow(gaussian, black, 2, 3, 1, 1);
     -fx-alignment: center;
 }
-
 
 .button {
     -fx-background-radius: 25px;
@@ -30,8 +30,6 @@
 }
 
 .button:hover {
-    /*-fx-background-color: #01c889;*/
-    /*-fx-background-size: 9px;*/
     -fx-background-radius: 23px;
     -fx-border-radius: 23px;
     -fx-font-size: 23px;
@@ -41,6 +39,7 @@
     -fx-height: 100px;
     -fx-cursor: hand;
 }
+
 .stock-market-table .filler {
     -fx-max-width: 0;
     -fx-pref-width: 0;
@@ -54,7 +53,7 @@
     -fx-padding: 5px 10px;
 }
 
-.pop-up .button:hover{
+.pop-up .button:hover {
     -fx-background-radius: 25px;
     -fx-padding: 15px;
     -fx-width: 200px;
@@ -63,7 +62,7 @@
     -fx-border-radius: 25px;
 }
 
-.yes-button:hover{
+.yes-button:hover {
     -fx-background-radius: 25px;
     -fx-padding: 15px;
     -fx-width: 200px;
@@ -72,7 +71,7 @@
     -fx-border-radius: 25px;
 }
 
-.no-button:hover{
+.no-button:hover {
     -fx-background-color: #ff4d4d;
     -fx-background-radius: 25px;
     -fx-padding: 15px;
