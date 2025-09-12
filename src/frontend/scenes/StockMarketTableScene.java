@@ -30,7 +30,7 @@ public class StockMarketTableScene implements Constants {
         mainContainer = new VBox();
         stockMarketTable = new TableView<>();
         teamNameColumn = new TableColumn<>("Team Name");
-        sharePriceColumn = new TableColumn<>("Share Price");
+        sharePriceColumn = new TableColumn<>("Team Share Price");
         balanceColumn = new TableColumn<>("Balance");
         totalAssetsColumn = new TableColumn<>("Total Assets");
     }
