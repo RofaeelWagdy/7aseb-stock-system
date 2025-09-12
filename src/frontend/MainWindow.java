@@ -3,10 +3,7 @@ package frontend;
 import backend.Main;
 import frontend.helpingClasses.ConfirmBox;
 import frontend.helpingClasses.PopUp;
-import frontend.scenes.ChangeSharePriceScene;
-import frontend.scenes.CreateTeamScene;
-import frontend.scenes.SharesTransactionScene;
-import frontend.scenes.StockMarketTableScene;
+import frontend.scenes.*;
 import javafx.application.Application;
 import javafx.stage.Stage;
 
@@ -54,15 +51,21 @@ public class MainWindow extends Application implements Constants {
         mainStage.show();
     }
 
-    public static void showChangeSharePriceScene() {
-        ChangeSharePriceScene changeSharePriceScene = new ChangeSharePriceScene();
-        mainStage.setScene(changeSharePriceScene.getScene());
+    public static void showUpdateAssetsScene() {
+        UpdateAssetsValuesScene updateAssetsValuesScene = new UpdateAssetsValuesScene();
+        mainStage.setScene(updateAssetsValuesScene.getScene());
         mainStage.show();
     }
 
     public static void showSharesTransactionScene() {
         SharesTransactionScene sharesTransactionScene = new SharesTransactionScene();
         mainStage.setScene(sharesTransactionScene.getScene());
+        mainStage.show();
+    }
+
+    public static void showSpecificTeamDetailsScene() {
+        ShowBoughtSharesScene showBoughtSharesScene = new ShowBoughtSharesScene();
+        mainStage.setScene(showBoughtSharesScene.getScene());
         mainStage.show();
     }
 }
