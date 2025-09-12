@@ -27,7 +27,7 @@ public class NavigationBar {
         stockMarketButton.setOnAction(_ -> MainWindow.showStockMarketScene());
         Button updateAssetsButton = new Button("Update Assets");
         updateAssetsButton.setOnAction(_ -> MainWindow.showUpdateAssetsScene());
-        Button showSpecificTeamDetailsButton = new Button("Show Specific Team Details");
+        Button showSpecificTeamDetailsButton = new Button("Show Bought Shares");
         showSpecificTeamDetailsButton.setOnAction(_ -> MainWindow.showSpecificTeamDetailsScene());
 
         HBox buttonsLayout = new HBox(20);
