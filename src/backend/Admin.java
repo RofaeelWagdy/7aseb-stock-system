@@ -225,7 +225,7 @@ public class Admin implements FileNames, TeamConstants {
 
         // get the share
         for (Share share : buyer_team.getBought_shares()) {
-            if (Objects.equals(share.getFrom_Team().getTeam_id(), from_team.getTeam_id())) {
+            if (Objects.equals(share.getFrom_team().getTeam_id(), from_team.getTeam_id())) {
                 if (share.getQuantity() < quantity) {
                     System.out.println("The Entered Quantity is More Than The Bought Quantity Of Shares");
                     return 4;
@@ -257,10 +257,10 @@ public class Admin implements FileNames, TeamConstants {
             for (Share share : shares) {
                 System.out.println("\nShare ID: " + share.getShare_id());
                 System.out.println("quantity: " + share.getQuantity());
-                System.out.println("buyer team: " + share.getBuyer_Team().getTeam_name());
-                System.out.println("from team: " + share.getFrom_Team().getTeam_name());
-                System.out.println("price of the single share: " + share.getFrom_Team().getSelf_share_price());
-                System.out.println("price of the total share: " + (share.getQuantity() * share.getFrom_Team().getSelf_share_price()));
+                System.out.println("buyer team: " + share.getBuyer_team().getTeam_name());
+                System.out.println("from team: " + share.getFrom_team().getTeam_name());
+                System.out.println("price of the single share: " + share.getFrom_team().getSelf_share_price());
+                System.out.println("price of the total share: " + (share.getQuantity() * share.getFrom_team().getSelf_share_price()));
                 System.out.println();
             }
         } else {
@@ -285,7 +285,7 @@ public class Admin implements FileNames, TeamConstants {
             Writer writer = new FileWriter(FileNames.SHARES_FILENAME);
             if (!boughtSharesArray.isEmpty()) {
                 for (Share share : boughtSharesArray) {
-                    writer.write(share.getShare_id() + "," + share.getQuantity() + "," + share.getBuyer_Team().getTeam_id() + "," + share.getFrom_Team().getTeam_id() + "\n");
+                    writer.write(share.getShare_id() + "," + share.getQuantity() + "," + share.getBuyer_team().getTeam_id() + "," + share.getFrom_team().getTeam_id() + "\n");
                 }
                 writer.close();
                 System.out.println("Shares Saved successfully!");
