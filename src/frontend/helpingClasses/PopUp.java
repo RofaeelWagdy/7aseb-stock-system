@@ -41,7 +41,7 @@ public class PopUp {
         alertLayout.setAlignment(Pos.CENTER);
         alertLayout.getStyleClass().add("pop-up");
 
-        Scene alertScene = new Scene(alertLayout, 500, 200);
+        Scene alertScene = new Scene(alertLayout, 700, 200);
         alertScene.getStylesheets().add(PopUp.class.getResource("/styles.css").toExternalForm());
 
         messageLayout.getChildren().add(logoView);
