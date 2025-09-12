@@ -92,14 +92,14 @@ public class Team implements TeamConstants {
     // when self team buy shares
     public void buy_shares(Share share) {
         bought_shares.add(share);
-        this.balance -= (share.getFrom_Team().getSelf_share_price() * share.getQuantity());
+        this.balance -= (share.getFrom_team().getSelf_share_price() * share.getQuantity());
     }
 
     // when self team buy shares
     public void update_existing_shares(Share share, int quantity) {
-        Share oldShare = isBoughtFromSpecificTeam(share.getFrom_Team());
+        Share oldShare = isBoughtFromSpecificTeam(share.getFrom_team());
         oldShare.setQuantity(oldShare.getQuantity() + quantity);
-        this.balance -= (share.getFrom_Team().getSelf_share_price() * quantity);
+        this.balance -= (share.getFrom_team().getSelf_share_price() * quantity);
     }
 
     // add bought shares to the bought shares array (used when loading data from file)
@@ -110,11 +110,30 @@ public class Team implements TeamConstants {
     // check if self team has bought from certain given team
     public Share isBoughtFromSpecificTeam(Team suspiciousTeam) {
         for (Share share : bought_shares) {
-            if (share.getFrom_Team().equals(suspiciousTeam)) {
+            if (share.getFrom_team().equals(suspiciousTeam)) {
                 return share;
             }
         }
         return null;
+    }
+
+    public int addToBalance(double amount) {
+        if (amount <= 0) {
+            return 1; // invalid amount
+        }
+        this.balance += amount;
+        return 0; // success
+    }
+
+    public int subtractFromBalance(double amount) {
+        if (amount <= 0) {
+            return 1; // invalid amount
+        }
+        if (this.balance < amount) {
+            return 2; // insufficient balance
+        }
+        this.balance -= amount;
+        return 0; // success
     }
 
     @Override
