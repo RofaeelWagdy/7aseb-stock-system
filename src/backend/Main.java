@@ -56,10 +56,10 @@ public class Main {
     }
 
     public static int addBalanceToTeamFromFrontEnd(Team team, double amount) {
-        return team.addToBalance(amount);
+        return admin.addBalanceToTeam(team, amount);
     }
 
     public static int subtractBalanceFromTeamFromFrontEnd(Team team, double amount) {
-        return team.subtractFromBalance(amount);
+        return admin.subtractBalanceFromTeam(team, amount);
     }
 }

@@ -337,7 +337,7 @@ public class Admin implements FileNames, TeamConstants {
     public int addPercentOfShareOfSpecificTeam(Team team, double added_percent) {
 //        check if the team exists
         if (getTeamFromArrayUsingID(team.getTeam_id()) == null) {
-            System.out.println("Buyer Team not found");
+            System.out.println("Team not found");
             return 1;
         }
         double oldSharePrice = team.getSelf_share_price();
@@ -352,7 +352,7 @@ public class Admin implements FileNames, TeamConstants {
     public int subtractPercentOfShareOfSpecificTeam(Team team, double added_percent) {
 //        check if the team exists
         if (getTeamFromArrayUsingID(team.getTeam_id()) == null) {
-            System.out.println("Buyer Team not found");
+            System.out.println("Team not found");
             return 1;
         }
         double oldSharePrice = team.getSelf_share_price();
@@ -363,4 +363,40 @@ public class Admin implements FileNames, TeamConstants {
         return 0;
     }
 
+    public int addBalanceToTeam(Team team, double amount) {
+//        check if the team exists
+        if (getTeamFromArrayUsingID(team.getTeam_id()) == null) {
+            System.out.println("Team not found");
+            return 1;
+        }
+        switch (team.addToBalance(amount)) {
+            case 0:
+                logsBlogger.blogAddingBalance(team.getTeam_name(), amount, team.getBalance());
+                break;
+            case 1:
+                System.out.println("Invalid amount");
+                return 2;
+        }
+        return 0;
+    }
+
+    public int subtractBalanceFromTeam(Team team, double amount) {
+//        check if the team exists
+        if (getTeamFromArrayUsingID(team.getTeam_id()) == null) {
+            System.out.println("Team not found");
+            return 1;
+        }
+        switch (team.subtractFromBalance(amount)) {
+            case 0:
+                logsBlogger.blogSubtractingBalance(team.getTeam_name(), amount, team.getBalance());
+                break;
+            case 1:
+                System.out.println("Invalid amount");
+                return 2;
+            case 2:
+                System.out.println("Insufficient balance");
+                return 3;
+        }
+        return 0;
+    }
 }

@@ -47,4 +47,12 @@ public class LogsWriter {
     public void blogSubtractingPercentFromSharePrice(String teamName, double oldSharePrice, double percentSubtracted, double newSharePrice) {
         appendLog("Share price Increased, Team Name: \"" + teamName + "\", Old Share Price: \"" + oldSharePrice + "\", Percent Added: \"" + percentSubtracted + "\", New Share Price:\"" + newSharePrice + "\"");
     }
+
+    public void blogAddingBalance(String teamName, double amountAdded, double newBalance) {
+        appendLog("Balance Added, Team Name: \"" + teamName + "\", Amount Added: \"" + amountAdded + "\", New Balance:\"" + newBalance + "\"");
+    }
+
+    public void blogSubtractingBalance(String teamName, double amountSubtracted, double newBalance) {
+        appendLog("Balance Subtracted, Team Name: \"" + teamName + "\", Amount Subtracted: \"" + amountSubtracted + "\", New Balance:\"" + newBalance + "\"");
+    }
 }

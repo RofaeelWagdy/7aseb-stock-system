@@ -207,6 +207,9 @@ public class UpdateAssetsValuesScene implements Constants {
                 Main.saveSharesToFileFromFrontEnd();
                 break;
             case 1:
+                PopUp.display("Error Adding Balance", "Selected \"Team\" not found", true);
+                break;
+            case 2:
                 PopUp.display("Error Adding Balance", "Invalid Amount", true);
                 break;
         }
@@ -220,9 +223,12 @@ public class UpdateAssetsValuesScene implements Constants {
                 Main.saveSharesToFileFromFrontEnd();
                 break;
             case 1:
-                PopUp.display("Error Subtracting Balance", "Invalid Amount", true);
+                PopUp.display("Error Subtracting Balance", "Selected \"Team\" not found", true);
                 break;
             case 2:
+                PopUp.display("Error Subtracting Balance", "Invalid Amount", true);
+                break;
+            case 3:
                 PopUp.display("Error Subtracting Balance", "Insufficient Balance", true);
                 break;
         }
