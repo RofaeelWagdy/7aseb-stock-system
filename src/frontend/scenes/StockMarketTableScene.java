@@ -67,6 +67,7 @@ public class StockMarketTableScene implements Constants {
         stockMarketTable.getColumns().addAll(teamNameColumn, sharePriceColumn, balanceColumn, totalAssetsColumn);
 
         stockMarketTable.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
+        stockMarketTable.setPrefHeight(550);
 
         // Set default sorting by Total Assets column in descending order
         stockMarketTable.getSortOrder().add(totalAssetsColumn);
