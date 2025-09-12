@@ -21,83 +21,36 @@ public class UpdateAssetsValuesScene implements Constants {
     private VBox mainContainer;
 
     private HBox rootLayout;
-    private VBox changeShareCustomPriceFormVBox;
-    private GridPane changeShareCustomPriceFormGridPane;
-    private Button changeShareCustomPriceSubmitButton;
 
     private VBox eventConsequencesVBox;
     private GridPane eventConsequencesGridPane;
     private Button eventConsequencesSubmitButton;
+
+    private VBox customUpdateAssetsFormVBox;
+    private GridPane customUpdateAssetsFormGridPane;
+    private Button customUpdateAssetsSubmitButton;
 
     private void layoutInitializer() {
         navBar = new NavigationBar();
         mainContainer = new VBox();
         rootLayout = new HBox();
 
-        changeShareCustomPriceFormVBox = new VBox();
-        changeShareCustomPriceFormGridPane = new GridPane();
-        changeShareCustomPriceSubmitButton = new Button("Submit");
-
         eventConsequencesVBox = new VBox();
         eventConsequencesGridPane = new GridPane();
         eventConsequencesSubmitButton = new Button("Submit");
+
+        customUpdateAssetsFormVBox = new VBox();
+        customUpdateAssetsFormGridPane = new GridPane();
+        customUpdateAssetsSubmitButton = new Button("Submit");
     }
 
     private void layoutOrganizer() {
         mainContainer.getChildren().addAll(navBar.getTitleBar(), rootLayout);
         mainContainer.setSpacing(120);
 
-        rootLayout.getChildren().addAll(changeShareCustomPriceFormVBox, eventConsequencesVBox);
+        rootLayout.getChildren().addAll(eventConsequencesVBox, customUpdateAssetsFormVBox);
         rootLayout.setAlignment(Pos.CENTER);
-        rootLayout.setSpacing(100);
-    }
-
-    private void showChangeShareCustomPriceFormScene() {
-        changeShareCustomPriceFormVBox.getChildren().addAll(changeShareCustomPriceFormGridPane, changeShareCustomPriceSubmitButton);
-        changeShareCustomPriceFormVBox.setAlignment(Pos.CENTER);
-        changeShareCustomPriceFormVBox.setSpacing(50);
-
-        Label typeOfOperationLabel = new Label("Type of operation:");
-        Label teamLabel = new Label("Choose Team");
-        Label valueOfPercentLabel = new Label("Value of %");
-
-        ObservableList<String> selectOperationTypeObservableList = FXCollections.observableArrayList();
-        selectOperationTypeObservableList.addAll("Add", "Minus");
-        ComboBox<String> selectOperationTypeComboBox = new ComboBox<>(selectOperationTypeObservableList);
-        selectOperationTypeComboBox.getSelectionModel().selectFirst();
-        selectOperationTypeComboBox.setMinWidth(250);
-
-        ObservableList<Team> selectTeam = FXCollections.observableArrayList();
-        selectTeam.addAll(Main.getTeamsFromFrontEnd());
-        ChoiceBox<Team> selectTeamComboBox = new ChoiceBox<>(selectTeam);
-        selectTeamComboBox.setMinWidth(250);
-
-        TextField valueOfPercentTextField = new TextField();
-        valueOfPercentTextField.setPromptText("Value of %");
-
-        changeShareCustomPriceFormGridPane.add(typeOfOperationLabel, 0, 0);
-        changeShareCustomPriceFormGridPane.add(selectOperationTypeComboBox, 1, 0);
-        changeShareCustomPriceFormGridPane.add(teamLabel, 0, 1);
-        changeShareCustomPriceFormGridPane.add(selectTeamComboBox, 1, 1);
-        changeShareCustomPriceFormGridPane.add(valueOfPercentLabel, 0, 2);
-        changeShareCustomPriceFormGridPane.add(valueOfPercentTextField, 1, 2);
-        changeShareCustomPriceFormGridPane.setAlignment(Pos.CENTER);
-        changeShareCustomPriceFormGridPane.setHgap(20);
-        changeShareCustomPriceFormGridPane.setVgap(20);
-
-        changeShareCustomPriceSubmitButton.setOnAction(_ -> {
-            if ((selectTeamComboBox.getValue() == null) || (valueOfPercentTextField.getText().isEmpty())) {
-                PopUp.display("Empty Fields", "Empty Fields\nMake Sure You Have Filled All Fields", true);
-            } else {
-                if (selectOperationTypeComboBox.getValue().equals("Add")) {
-                    addPercentToSharePrice(selectTeamComboBox.getValue(), Integer.parseInt(valueOfPercentTextField.getText()));
-                } else {
-                    subtractPercentFromSharePrice(selectTeamComboBox.getValue(), Integer.parseInt(valueOfPercentTextField.getText()));
-                }
-                valueOfPercentTextField.clear();
-                selectTeamComboBox.getSelectionModel().clearSelection();
-            }
-        });
+        rootLayout.setSpacing(120);
     }
 
     private void showEventConsequencesScene() {
@@ -114,7 +67,7 @@ public class UpdateAssetsValuesScene implements Constants {
         selectTeamComboBox.setMinWidth(250);
 
         ObservableList<String> selectEventObservableList = FXCollections.observableArrayList();
-        selectEventObservableList.addAll("Lecture Task", "Workshop Task", "Gathering", "Winning Game", "Attending Prayer", "Not Submitting Task");
+        selectEventObservableList.addAll("Lecture Task", "Workshop Task", "Gathering", "1st Game Winner", "2nd Game Winner", "3rd Game Winner", "Rest Winning Teams", "Attending Prayer", "Not Submitting Task");
         ComboBox<String> selectEventComboBox = new ComboBox<>(selectEventObservableList);
         selectEventComboBox.setMinWidth(250);
 
@@ -135,11 +88,19 @@ public class UpdateAssetsValuesScene implements Constants {
                         addPercentToSharePrice(selectTeamComboBox.getValue(), 25);
                         addBalance(selectTeamComboBox.getValue(), 500);
                         break;
-                    case "Workshop Task", "Winning Game":
+                    case "Workshop Task", "1st Game Winner":
                         addPercentToSharePrice(selectTeamComboBox.getValue(), 20);
                         addBalance(selectTeamComboBox.getValue(), 300);
                         break;
-                    case "Gathering":
+                    case "2nd Game Winner":
+                        addPercentToSharePrice(selectTeamComboBox.getValue(), 15);
+                        addBalance(selectTeamComboBox.getValue(), 250);
+                        break;
+                    case "3rd Game Winner":
+                        addPercentToSharePrice(selectTeamComboBox.getValue(), 10);
+                        addBalance(selectTeamComboBox.getValue(), 200);
+                        break;
+                    case "Rest Winning Teams", "Gathering":
                         addPercentToSharePrice(selectTeamComboBox.getValue(), 5);
                         addBalance(selectTeamComboBox.getValue(), 100);
                         break;
@@ -151,6 +112,62 @@ public class UpdateAssetsValuesScene implements Constants {
                         break;
                 }
                 selectEventComboBox.getSelectionModel().clearSelection();
+                selectTeamComboBox.getSelectionModel().clearSelection();
+            }
+        });
+    }
+
+    private void showCustomUpdateAssetsFormScene() {
+        customUpdateAssetsFormVBox.getChildren().addAll(customUpdateAssetsFormGridPane, customUpdateAssetsSubmitButton);
+        customUpdateAssetsFormVBox.setAlignment(Pos.CENTER);
+        customUpdateAssetsFormVBox.setSpacing(50);
+
+        Label typeOfOperationLabel = new Label("Operation Type: ");
+        Label teamLabel = new Label("Choose Team: ");
+        Label valueOfPercentLabel = new Label("Value: ");
+
+        ObservableList<String> selectOperationTypeObservableList = FXCollections.observableArrayList();
+        selectOperationTypeObservableList.addAll("Add Balance", "Minus Balance", "Add Percent to Share", "Minus Percent from Share");
+        ComboBox<String> selectOperationTypeComboBox = new ComboBox<>(selectOperationTypeObservableList);
+        selectOperationTypeComboBox.setMinWidth(250);
+
+        ObservableList<Team> selectTeam = FXCollections.observableArrayList();
+        selectTeam.addAll(Main.getTeamsFromFrontEnd());
+        ChoiceBox<Team> selectTeamComboBox = new ChoiceBox<>(selectTeam);
+        selectTeamComboBox.setMinWidth(250);
+
+        TextField valueTextField = new TextField();
+        valueTextField.setPromptText("Value");
+
+        customUpdateAssetsFormGridPane.add(typeOfOperationLabel, 0, 0);
+        customUpdateAssetsFormGridPane.add(selectOperationTypeComboBox, 1, 0);
+        customUpdateAssetsFormGridPane.add(teamLabel, 0, 1);
+        customUpdateAssetsFormGridPane.add(selectTeamComboBox, 1, 1);
+        customUpdateAssetsFormGridPane.add(valueOfPercentLabel, 0, 2);
+        customUpdateAssetsFormGridPane.add(valueTextField, 1, 2);
+        customUpdateAssetsFormGridPane.setAlignment(Pos.CENTER);
+        customUpdateAssetsFormGridPane.setHgap(20);
+        customUpdateAssetsFormGridPane.setVgap(20);
+
+        customUpdateAssetsSubmitButton.setOnAction(_ -> {
+            if ((selectTeamComboBox.getValue() == null) || (valueTextField.getText().isEmpty())) {
+                PopUp.display("Empty Fields", "Empty Fields\nMake Sure You Have Filled All Fields", true);
+            } else {
+                switch (selectOperationTypeComboBox.getValue()) {
+                    case "Add Balance":
+                        addBalance(selectTeamComboBox.getValue(), Double.parseDouble(valueTextField.getText()));
+                        break;
+                    case "Minus Balance":
+                        subtractBalance(selectTeamComboBox.getValue(), Double.parseDouble(valueTextField.getText()));
+                        break;
+                    case "Add Percent to Share":
+                        addPercentToSharePrice(selectTeamComboBox.getValue(), Integer.parseInt(valueTextField.getText()));
+                        break;
+                    case "Minus Percent from Share":
+                        subtractPercentFromSharePrice(selectTeamComboBox.getValue(), Integer.parseInt(valueTextField.getText()));
+                        break;
+                }
+                valueTextField.clear();
                 selectTeamComboBox.getSelectionModel().clearSelection();
             }
         });
@@ -219,7 +236,7 @@ public class UpdateAssetsValuesScene implements Constants {
     public Scene getScene() {
         layoutInitializer();
         layoutOrganizer();
-        showChangeShareCustomPriceFormScene();
+        showCustomUpdateAssetsFormScene();
         showEventConsequencesScene();
         setScene();
         return updateAssestsValuesScene;
